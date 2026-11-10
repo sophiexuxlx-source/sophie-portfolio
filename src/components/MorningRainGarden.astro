@@ -205,7 +205,7 @@ const isZh = lang === 'zh';
   </div> <!-- End sceneContainer -->
 
   <!-- Hidden Native Audio Element with real 3-min studio recording -->
-  <audio id="realRainAudio" loop preload="auto">
+  <audio id="realRainAudio" loop preload="auto" autoplay playsinline>
     <source src="/morning_rain.mp3" type="audio/mpeg" />
     <source src="/morning_rain.ogg" type="audio/ogg" />
   </audio>
@@ -482,24 +482,29 @@ const isZh = lang === 'zh';
     isPlaying = true;
     updateAudioUI(true);
 
-    const promise = audio.play();
-    if (promise !== undefined) {
-      promise.catch(() => {
-        // Modern browsers block autoplay until the user clicks or presses a key anywhere on page.
-        // We attach one-shot listeners to immediately start playing on ANY first interaction.
-        const startOnFirstGesture = () => {
-          if (isPlaying && audio.paused) {
-            audio.play().catch(() => {});
-          }
-          ['click', 'pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(ev => {
-            window.removeEventListener(ev, startOnFirstGesture);
-          });
-        };
-        ['click', 'pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(ev => {
-          window.addEventListener(ev, startOnFirstGesture, { once: true, passive: true });
-        });
+    const tryPlay = () => {
+      audio.play().catch(() => {});
+    };
+
+    // Attempt direct play
+    tryPlay();
+
+    // Universal unlock: browsers require one user gesture (click, tap, key, or even touch)
+    // We attach transparent one-shot triggers to window, document, and root container
+    const unlockAudio = () => {
+      if (isPlaying && audio.paused) {
+        audio.play().catch(() => {});
+      }
+      ['pointerdown', 'click', 'keydown', 'touchstart'].forEach(evt => {
+        window.removeEventListener(evt, unlockAudio, true);
+        document.removeEventListener(evt, unlockAudio, true);
       });
-    }
+    };
+
+    ['pointerdown', 'click', 'keydown', 'touchstart'].forEach(evt => {
+      window.addEventListener(evt, unlockAudio, { once: true, capture: true, passive: true });
+      document.addEventListener(evt, unlockAudio, { once: true, capture: true, passive: true });
+    });
   }
 
   function toggleAudio() {
