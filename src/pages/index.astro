@@ -1,0 +1,404 @@
+---
+import '../styles/global.css';
+import MorningRainGarden from '../components/MorningRainGarden.astro';
+
+const navLinks = [
+  { label: 'GitHub', href: 'https://github.com/sophiexuxlx-source', external: true },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/sophie-xu-cpa/', external: true },
+  { label: 'Work', href: '#work' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Writing', href: '#writing' },
+  { label: 'Credentials', href: '#credentials' },
+];
+
+const workList = [
+  { company: 'Oriens Alulin Products Inc.', location: 'Toronto, Ontario' },
+  { company: 'CAA Insurance (CAA Club Group)', location: 'Markham, Ontario' },
+  { company: 'Aurora Group', location: 'Vaughan, Ontario' },
+  { company: 'Toronto Auto Group', location: 'Toronto, Ontario' },
+  { company: 'Teva Canada', location: 'Toronto, Ontario' },
+];
+
+const projects = [
+  {
+    title: 'SoMeet',
+    subtitle: 'Real-Time Speech Intelligence Studio',
+    desc: 'Production executive meeting platform streaming live 16kHz audio via WebSockets to multimodal LLMs for instant briefings and automated minutes.',
+    links: [
+      { label: 'Demo Video', url: '/someet_demo.mp4' },
+      { label: 'GitHub', url: 'https://github.com/sophiexuxlx-source/someet-web' },
+    ],
+  },
+  {
+    title: 'Autonomous Executive WBR Pipeline',
+    subtitle: 'Financial Intelligence Engine',
+    desc: 'Autonomous pipeline extracting SQL metrics, executing headless Excel COM model refreshes, and synthesizing LLM executive variance narratives.',
+    links: [
+      { label: 'GitHub', url: 'https://github.com/sophiexuxlx-source/autonomous-executive-wbr-pipeline' },
+    ],
+  },
+  {
+    title: 'Cross-Border Tax & Tariff Engine',
+    subtitle: 'Landed-Cost Model',
+    desc: 'Interactive calculation model for multi-currency landed costs, customs tariffs, and currency hedging scenarios.',
+    links: [
+      { label: 'GitHub', url: 'https://github.com/sophiexuxlx-source' },
+    ],
+  },
+];
+
+const featuredArticle = {
+  title: "A CPA's Journey to an AI Architect",
+  subtitle: "Why I Moved from Chatbots to AI Builder, and Finally to AI Architect",
+  url: "https://www.linkedin.com/pulse/my-journey-ai-architect-sophie-xu-cpa-nehmc/",
+  platform: "LinkedIn Pulse",
+  date: "October 2026",
+  quote: "In accounting, 99% is not good enough. When you deal with complex statutory reconciliations, balance sheet integrity, or rigorous audits, 99% accuracy means material errors. An AI Builder creates what feels like a clever hack; an AI Architect builds a robust, dependable, production-level product.",
+  principles: [
+    "Think like an architect first: Map boundaries, internal controls, and edge cases before code.",
+    "Treat AI as an intelligent teammate: Define the strategic 'what' and 'why', architect guardrails, and audit deliverables with a CPA eye.",
+    "Operate like a systems thinker: True value comes from orchestrating pipelines, validation checks, and resilient workflows.",
+  ],
+  tags: ["AI Architecture", "CPA", "Systems Thinking", "Production AI"],
+};
+
+const educationItems = [
+  'Chartered Professional Accountant (CPA) — CPA Ontario',
+  'B.Com. (Honours in Accounting) — York University',
+  'Fundamentals of Insurance Accounting — CIAA (Canadian Insurance Accountants Association)',
+];
+
+const aiItems = [
+  'Certified AI Architect & Certified AI Builder',
+  'Anthropic Professional AI Specialization',
+  'Autonomous Agents & Python Pipeline Engineering',
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Sophie Xu, CPA</title>
+  <meta name="description" content="Personal website of Sophie Xu, CPA. Corporate finance, insurance accounting, and autonomous AI systems." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <script is:inline>
+    const savedTheme = localStorage.getItem('sophie.theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+</head>
+
+<body class="antialiased selection:bg-[#4A6B53]/20 selection:text-[#4A6B53]">
+  <!-- 3D Morning Rain Garden (Activated on ?room=1) -->
+  <MorningRainGarden lang="en" />
+
+  <div class="min-h-screen flex flex-col max-w-4xl mx-auto px-6 py-8 sm:px-8 sm:py-12">
+    
+    <!-- Navigation Header -->
+    <header class="flex items-center justify-between pb-6 border-b border-[var(--border-color)]">
+      <div>
+        <a href="/" class="text-lg font-bold tracking-tight text-[var(--text-primary)] hover:opacity-80 transition-opacity">
+          Sophie Xu<span class="text-[var(--accent-sage)] ml-1.5 font-mono text-xs uppercase px-2 py-0.5 rounded-full bg-[var(--accent-sage-light)] font-semibold">CPA</span>
+        </a>
+      </div>
+
+      <nav class="flex items-center gap-4 sm:gap-6 text-sm">
+        <div class="flex items-center gap-4 sm:gap-5 text-[var(--text-secondary)] font-medium text-xs sm:text-sm">
+          {navLinks.map((link) => (
+            <a
+              href={link.href}
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noopener noreferrer" : undefined}
+              class="hover:text-[var(--text-primary)] transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+
+        <div class="flex items-center gap-2 border-l border-[var(--border-color)] pl-3 sm:pl-4">
+          <!-- Language Toggle -->
+          <a
+            href="/zh"
+            class="px-2 py-1 rounded-full text-xs font-mono font-medium border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:border-[var(--accent-sage)] hover:text-[var(--accent-sage)] transition-all shadow-sm"
+            title="切换到中文版"
+          >
+            中
+          </a>
+
+          <!-- 3D Garden Toggle -->
+          <a
+            href="?room=1"
+            id="gardenToggle"
+            class="px-2.5 py-1 rounded-full text-xs font-mono font-medium border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:border-[var(--accent-sage)] hover:text-[var(--accent-sage)] transition-all shadow-sm"
+            title="Switch to 3D Garden"
+          >
+            HI-FI
+          </a>
+
+          <!-- Theme Switcher -->
+          <button
+            id="themeToggle"
+            type="button"
+            class="p-1.5 rounded-full border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all shadow-sm"
+            aria-label="Toggle color theme"
+          >
+            <span id="themeIcon">☀️</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero / Intro Section (lizheng.ai inspired executive layout) -->
+    <section class="mt-8 sm:mt-12 pb-10 border-b border-[var(--border-color)]">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        
+        <!-- Left: Statement & Narrative (7 cols) -->
+        <div class="md:col-span-7 space-y-4">
+          <h1 class="text-3xl sm:text-4xl md:text-[2.6rem] font-bold tracking-tight text-[var(--text-primary)] leading-[1.2]" style="font-family: var(--font-serif);">
+            Rigorous Finance,<br />
+            Production AI Architecture.
+          </h1>
+
+          <div class="space-y-2 text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed pt-1">
+            <p class="font-medium text-[var(--text-primary)]">
+              I'm Sophie, Canadian CPA & AI Developer.
+            </p>
+            <p class="text-sm sm:text-base text-[var(--text-secondary)]">
+              Merging rigorous enterprise financial logic with production-grade modern AI systems, with 8+ years accounting experience.
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Half-Body Cutout Portrait with Stylized Watermark (5 cols) -->
+        <div class="md:col-span-5 relative flex justify-center md:justify-end items-end pt-4 md:pt-0">
+          <!-- Stylized Typography Watermark -->
+          <div class="absolute right-2 bottom-0 text-7xl sm:text-8xl md:text-9xl font-black font-mono tracking-tighter text-[var(--accent-sage)]/10 select-none pointer-events-none z-0">
+            CPA
+          </div>
+
+          <!-- Ambient Glow Circle behind portrait -->
+          <div class="absolute w-56 h-56 rounded-full bg-[var(--accent-sage)]/5 blur-3xl pointer-events-none -z-0"></div>
+
+          <!-- Cutout Portrait Image -->
+          <div class="relative z-10 w-60 sm:w-68 md:w-76">
+            <img
+              src="/sophie_half_body.png"
+              alt="Sophie Xu, CPA & AI Builder"
+              class="w-full h-auto object-contain filter drop-shadow-md"
+              loading="eager"
+            />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="mt-8 space-y-12">
+
+
+      <!-- Section: Work (Minimalist List) -->
+      <section id="work" class="scroll-mt-8">
+        <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4" style="font-family: var(--font-serif);">
+          Work
+        </h2>
+        <div class="space-y-2.5">
+          {workList.map((item) => (
+            <div class="flex items-baseline justify-between py-2 border-b border-[var(--border-color)]/60 text-sm">
+              <span class="font-semibold text-[var(--text-primary)]">
+                {item.company}
+              </span>
+              <span class="text-xs font-mono text-[var(--text-muted)]">
+                {item.location}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Section: Projects (Simplified) -->
+      <section id="projects" class="scroll-mt-8">
+        <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4" style="font-family: var(--font-serif);">
+          Projects
+        </h2>
+        <div class="space-y-4">
+          {projects.map((proj) => (
+            <div class="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--accent-sage)] transition-colors">
+              <div class="flex items-baseline justify-between gap-2 mb-1">
+                <h3 class="text-sm font-bold text-[var(--text-primary)]">
+                  {proj.title}
+                  {proj.subtitle && (
+                    <span class="ml-2 font-normal text-xs text-[var(--text-muted)] hidden sm:inline">
+                      — {proj.subtitle}
+                    </span>
+                  )}
+                </h3>
+                <div class="flex items-center gap-2 text-xs">
+                  {proj.links.map((link) => (
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="font-semibold text-[var(--accent-sage)] hover:underline inline-flex items-center gap-0.5"
+                    >
+                      {link.label} ↗
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+                {proj.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Section: Writing & Thought Leadership -->
+      <section id="writing" class="scroll-mt-8">
+        <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4" style="font-family: var(--font-serif);">
+          Writing & Perspectives
+        </h2>
+
+        <div class="p-5 sm:p-6 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--accent-sage)] transition-all shadow-xs group">
+          <div class="flex flex-wrap items-center gap-2 mb-3">
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-[var(--accent-sage-light)] text-[var(--accent-sage)] border border-[var(--accent-sage)]/25">
+              Featured Publication
+            </span>
+            <span class="text-xs font-mono text-[var(--text-muted)]">
+              {featuredArticle.date}
+            </span>
+          </div>
+
+          <h3 class="text-lg sm:text-xl font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-sage)] transition-colors leading-snug">
+            <a href={featuredArticle.url} target="_blank" rel="noopener noreferrer" class="hover:underline inline-flex items-center gap-1.5">
+              {featuredArticle.title}
+              <span class="text-sm">↗</span>
+            </a>
+          </h3>
+
+          <p class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] mt-1 mb-4">
+            {featuredArticle.subtitle}
+          </p>
+
+          <blockquote class="pl-4 py-1.5 border-l-2 border-[var(--accent-sage)] text-xs sm:text-sm text-[var(--text-secondary)] italic my-4 bg-[var(--accent-sage)]/5 rounded-r-lg">
+            "{featuredArticle.quote}"
+          </blockquote>
+
+          <div class="space-y-1.5 my-4 pt-1">
+            <div class="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold">
+              Three Architecture Principles:
+            </div>
+            <ul class="space-y-1 text-xs text-[var(--text-secondary)]">
+              {featuredArticle.principles.map((p) => (
+                <li class="flex items-start gap-2">
+                  <span class="text-[var(--accent-sage)] font-bold">✓</span>
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="flex items-center justify-end pt-4 border-t border-[var(--border-color)]/60">
+            <a
+              href={featuredArticle.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 text-xs font-bold text-[var(--accent-sage)] hover:underline"
+            >
+              Read Full Article on LinkedIn Pulse ↗
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Credentials (Refined) -->
+      <section id="credentials" class="scroll-mt-8">
+        <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4" style="font-family: var(--font-serif);">
+          Credentials
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Card 1: Designations & Education -->
+          <div class="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)]">
+            <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-[var(--accent-wood)] mb-2.5">
+              Designations & Education
+            </h3>
+            <ul class="space-y-2 text-xs text-[var(--text-secondary)] leading-relaxed">
+              {educationItems.map((item) => (
+                <li class="flex items-start gap-2">
+                  <span class="text-[var(--accent-sage)] mt-0.5">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Card 2: AI & Technology -->
+          <div class="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)]">
+            <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-[var(--accent-wood)] mb-2.5">
+              AI & Architecture
+            </h3>
+            <ul class="space-y-2 text-xs text-[var(--text-secondary)] leading-relaxed">
+              {aiItems.map((item) => (
+                <li class="flex items-start gap-2">
+                  <span class="text-[var(--accent-sage)] mt-0.5">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Minimalist Footer with Online links -->
+    <footer class="pt-8 mt-12 border-t border-[var(--border-color)] flex flex-col sm:flex-row items-center justify-between text-xs text-[var(--text-muted)] gap-3 font-mono">
+      <div>
+        © 2026 Sophie Xu, CPA
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://www.linkedin.com/in/sophie-xu-cpa/" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--text-primary)] transition-colors">
+          LinkedIn
+        </a>
+        <span>•</span>
+        <a href="https://github.com/sophiexuxlx-source" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--text-primary)] transition-colors">
+          GitHub
+        </a>
+        <span>•</span>
+        <a href="#" class="hover:text-[var(--text-primary)] transition-colors">Top ↑</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script is:inline>
+    const themeBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+
+    function updateIcon(theme) {
+      if (themeIcon) {
+        themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+      }
+    }
+
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    updateIcon(currentTheme);
+
+    themeBtn?.addEventListener('click', () => {
+      const active = document.documentElement.getAttribute('data-theme');
+      const next = active === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('sophie.theme', next);
+      updateIcon(next);
+    });
+  </script>
+</body>
+</html>

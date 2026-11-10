@@ -1,0 +1,406 @@
+---
+import '../styles/global.css';
+import MorningRainGarden from '../components/MorningRainGarden.astro';
+
+const navLinks = [
+  { label: 'GitHub', href: 'https://github.com/sophiexuxlx-source', external: true },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/sophie-xu-cpa/', external: true },
+  { label: '工作', href: '#work' },
+  { label: '项目', href: '#projects' },
+  { label: '文章', href: '#writing' },
+  { label: '资质', href: '#credentials' },
+];
+
+const workList = [
+  { company: 'Oriens Alulin Products Inc.', location: '安大略省多伦多' },
+  { company: 'CAA Insurance (CAA Club Group)', location: '安大略省万锦' },
+  { company: 'Aurora Group', location: '安大略省旺市' },
+  { company: 'Toronto Auto Group', location: '安大略省多伦多' },
+  { company: 'Teva Canada', location: '安大略省多伦多' },
+];
+
+const projects = [
+  {
+    title: 'SoMeet',
+    subtitle: '实时语音智能会议工作台',
+    desc: '基于 WebSockets 将 16kHz 音频实时流式传输至多模态大模型，自动化生成高管决策纪要与行动矩阵。',
+    links: [
+      { label: '演示视频', url: '/someet_demo.mp4' },
+      { label: 'GitHub', url: 'https://github.com/sophiexuxlx-source/someet-web' },
+    ],
+  },
+  {
+    title: 'Autonomous Executive WBR Pipeline',
+    subtitle: '自动化财务智能分析管线',
+    desc: '自动化执行 SQL 指标提取、无头刷新 Excel 财务模型，并结合大模型自动生成高管层方差归因分析。',
+    links: [
+      { label: 'GitHub', url: 'https://github.com/sophiexuxlx-source/autonomous-executive-wbr-pipeline' },
+    ],
+  },
+  {
+    title: 'Cross-Border Tax & Tariff Engine',
+    subtitle: '跨国关税与到岸成本模型',
+    desc: '针对多币种落地成本、跨境海关关税及汇率对冲场景的交互式试算分析工具。',
+    links: [
+      { label: 'GitHub', url: 'https://github.com/sophiexuxlx-source' },
+    ],
+  },
+];
+
+const featuredArticle = {
+  title: "A CPA's Journey to an AI Architect",
+  titleZh: "从注册会计师到 AI 架构师的蜕变之路",
+  subtitle: "Why I Moved from Chatbots to AI Builder, and Finally to AI Architect",
+  subtitleZh: "为何我从 Chatbot 对话、进阶到 AI Builder，并最终走向生产级 AI 架构师",
+  url: "https://www.linkedin.com/pulse/my-journey-ai-architect-sophie-xu-cpa-nehmc/",
+  platform: "LinkedIn Pulse 专栏",
+  date: "2026 年 10 月",
+  quote: "在财务世界里，99% 的准确率意味着重大错报。普通开发者往往停留在‘巧妙的临时脚本’，而 AI 架构师构建的是具备系统级容错、全链路对账与可溯源审计的生产级工程体系。",
+  principles: [
+    "架构先行（Think like an architect first）：在写代码或生成模型前，先划定数据边界、内控机制与极端边界场景。",
+    "将 AI 视为高能技术合伙人（Treat AI as an intelligent teammate）：由 CPA 确立战略方向与护栏规范，让 AI 自主测试验证，再以严苛审计标准验收。",
+    "系统化思维（Operate like a systems thinker）：价值从不来自单次提示词，而在于将数据抓取、清洗对齐、校验与报表全流程编排为稳定闭环。",
+  ],
+  tags: ["AI 架构思维", "CPA 执业底色", "系统思考", "企业生产级系统"],
+};
+
+const educationItems = [
+  '加拿大注册会计师 (CPA) — 安省注册会计师协会 (CPA Ontario)',
+  '约克大学商学学士（会计学荣誉学士 B.Com. Honours）',
+  '加拿大保险会计师协会认证 (CIAA)',
+];
+
+const aiItems = [
+  '认证 AI 架构师 & AI 开发者 (Certified AI Architect & Builder)',
+  'Anthropic 专项 AI 认证',
+  '自主智能体系统与 Python 数据管线开发',
+];
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Sophie Xu, CPA — 个人主页</title>
+  <meta name="description" content="Sophie Xu, CPA 个人主页。拥有8年+企业财务报告与保险会计经验，兼具自主 AI 智能体与自动化数据工程实力。" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script is:inline>
+    const savedTheme = localStorage.getItem('sophie.theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+</head>
+
+<body class="antialiased selection:bg-[#4A6B53]/20 selection:text-[#4A6B53]">
+  <!-- 3D Morning Rain Garden (Activated on ?room=1) -->
+  <MorningRainGarden lang="zh" />
+
+  <div class="min-h-screen flex flex-col max-w-4xl mx-auto px-6 py-8 sm:px-8 sm:py-12">
+    
+    <!-- Navigation Header -->
+    <header class="flex items-center justify-between pb-6 border-b border-[var(--border-color)]">
+      <div>
+        <a href="/zh" class="text-lg font-bold tracking-tight text-[var(--text-primary)] hover:opacity-80 transition-opacity">
+          Sophie Xu<span class="text-[var(--accent-sage)] ml-1.5 font-mono text-xs uppercase px-2 py-0.5 rounded-full bg-[var(--accent-sage-light)] font-semibold">CPA</span>
+        </a>
+      </div>
+
+      <nav class="flex items-center gap-4 sm:gap-6 text-sm">
+        <div class="flex items-center gap-4 sm:gap-5 text-[var(--text-secondary)] font-medium text-xs sm:text-sm">
+          {navLinks.map((link) => (
+            <a
+              href={link.href}
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noopener noreferrer" : undefined}
+              class="hover:text-[var(--text-primary)] transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+
+        <div class="flex items-center gap-2 border-l border-[var(--border-color)] pl-3 sm:pl-4">
+          <!-- Language Toggle to EN -->
+          <a
+            href="/"
+            class="px-2 py-1 rounded-full text-xs font-mono font-medium border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:border-[var(--accent-sage)] hover:text-[var(--accent-sage)] transition-all shadow-sm"
+            title="Switch to English"
+          >
+            EN
+          </a>
+
+          <!-- 3D Garden Toggle -->
+          <a
+            href="?room=1"
+            id="gardenToggle"
+            class="px-2.5 py-1 rounded-full text-xs font-mono font-medium border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:border-[var(--accent-sage)] hover:text-[var(--accent-sage)] transition-all shadow-sm"
+            title="切换到 3D 清晨微雨花园"
+          >
+            HI-FI
+          </a>
+
+          <!-- Theme Switcher -->
+          <button
+            id="themeToggle"
+            type="button"
+            class="p-1.5 rounded-full border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all shadow-sm"
+            aria-label="切换明暗主题"
+          >
+            <span id="themeIcon">☀️</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero / Intro Section (lizheng.ai inspired executive layout) -->
+    <section class="mt-8 sm:mt-12 pb-10 border-b border-[var(--border-color)]">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        
+        <!-- Left: Statement & Narrative (7 cols) -->
+        <div class="md:col-span-7 space-y-4">
+          <h1 class="text-3xl sm:text-4xl md:text-[2.6rem] font-bold tracking-tight text-[var(--text-primary)] leading-[1.2]" style="font-family: var(--font-serif), 'Noto Serif SC', serif;">
+            严谨企业财务，<br />
+            生产级智能架构。
+          </h1>
+
+          <div class="space-y-2 text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed pt-1">
+            <p class="font-medium text-[var(--text-primary)]">
+              我是 Sophie，加拿大注册会计师 (CPA) 与 AI 开发者。
+            </p>
+            <p class="text-sm sm:text-base text-[var(--text-secondary)]">
+              我专注于将严谨的企业财务逻辑与生产级现代 AI 系统深度融合，拥有 8 年+财务会计经验。
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Half-Body Cutout Portrait with Stylized Watermark (5 cols) -->
+        <div class="md:col-span-5 relative flex justify-center md:justify-end items-end pt-4 md:pt-0">
+          <!-- Stylized Typography Watermark (like lizheng.ai's '立正') -->
+          <div class="absolute right-2 bottom-0 text-7xl sm:text-8xl md:text-9xl font-black font-mono tracking-tighter text-[var(--accent-sage)]/10 select-none pointer-events-none z-0">
+            CPA
+          </div>
+
+          <!-- Ambient Glow Circle behind portrait -->
+          <div class="absolute w-56 h-56 rounded-full bg-[var(--accent-sage)]/5 blur-3xl pointer-events-none -z-0"></div>
+
+          <!-- Cutout Portrait Image -->
+          <div class="relative z-10 w-60 sm:w-68 md:w-76">
+            <img
+              src="/sophie_half_body.png"
+              alt="Sophie Xu, CPA & AI Builder"
+              class="w-full h-auto object-contain filter drop-shadow-md"
+              loading="eager"
+            />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="mt-8 space-y-12">
+
+      <!-- Section: Work (Minimalist List) -->
+      <section id="work" class="scroll-mt-8">
+        <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4" style="font-family: var(--font-serif), 'Noto Serif SC', serif;">
+          工作
+        </h2>
+        <div class="space-y-2.5">
+          {workList.map((item) => (
+            <div class="flex items-baseline justify-between py-2 border-b border-[var(--border-color)]/60 text-sm">
+              <span class="font-semibold text-[var(--text-primary)]">
+                {item.company}
+              </span>
+              <span class="text-xs font-mono text-[var(--text-muted)]">
+                {item.location}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Section: Projects (Simplified) -->
+      <section id="projects" class="scroll-mt-8">
+        <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4" style="font-family: var(--font-serif), 'Noto Serif SC', serif;">
+          项目
+        </h2>
+        <div class="space-y-4">
+          {projects.map((proj) => (
+            <div class="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--accent-sage)] transition-colors">
+              <div class="flex items-baseline justify-between gap-2 mb-1">
+                <h3 class="text-sm font-bold text-[var(--text-primary)]">
+                  {proj.title}
+                  {proj.subtitle && (
+                    <span class="ml-2 font-normal text-xs text-[var(--text-muted)] hidden sm:inline">
+                      — {proj.subtitle}
+                    </span>
+                  )}
+                </h3>
+                <div class="flex items-center gap-2 text-xs">
+                  {proj.links.map((link) => (
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="font-semibold text-[var(--accent-sage)] hover:underline inline-flex items-center gap-0.5"
+                    >
+                      {link.label} ↗
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+                {proj.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Section: Writing & Thought Leadership (专栏与深度思考) -->
+      <section id="writing" class="scroll-mt-8">
+        <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4" style="font-family: var(--font-serif), 'Noto Serif SC', serif;">
+          专栏与思考
+        </h2>
+
+        <div class="p-5 sm:p-6 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--accent-sage)] transition-all shadow-xs group">
+          <div class="flex flex-wrap items-center gap-2 mb-3">
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-[var(--accent-sage-light)] text-[var(--accent-sage)] border border-[var(--accent-sage)]/25">
+              深度发表
+            </span>
+            <span class="text-xs font-mono text-[var(--text-muted)]">
+              {featuredArticle.date}
+            </span>
+          </div>
+
+          <h3 class="text-lg sm:text-xl font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-sage)] transition-colors leading-snug">
+            <a href={featuredArticle.url} target="_blank" rel="noopener noreferrer" class="hover:underline inline-flex items-center gap-1.5">
+              <span>{featuredArticle.titleZh}</span>
+              <span class="text-xs font-mono font-normal text-[var(--text-muted)] hidden md:inline">({featuredArticle.title})</span>
+              <span class="text-sm">↗</span>
+            </a>
+          </h3>
+
+          <p class="text-xs sm:text-sm font-medium text-[var(--text-secondary)] mt-1 mb-4">
+            {featuredArticle.subtitleZh}
+          </p>
+
+          <blockquote class="pl-4 py-1.5 border-l-2 border-[var(--accent-sage)] text-xs sm:text-sm text-[var(--text-secondary)] italic my-4 bg-[var(--accent-sage)]/5 rounded-r-lg">
+            “{featuredArticle.quote}”
+          </blockquote>
+
+          <div class="space-y-1.5 my-4 pt-1">
+            <div class="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold">
+              文章核心方法论（Three Architecture Principles）：
+            </div>
+            <ul class="space-y-1 text-xs text-[var(--text-secondary)]">
+              {featuredArticle.principles.map((p) => (
+                <li class="flex items-start gap-2">
+                  <span class="text-[var(--accent-sage)] font-bold">✓</span>
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="flex items-center justify-end pt-4 border-t border-[var(--border-color)]/60">
+            <a
+              href={featuredArticle.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 text-xs font-bold text-[var(--accent-sage)] hover:underline"
+            >
+              在 LinkedIn Pulse 阅读全文 ↗
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Credentials (Refined) -->
+      <section id="credentials" class="scroll-mt-8">
+        <h2 class="text-xl font-bold text-[var(--text-primary)] mb-4" style="font-family: var(--font-serif), 'Noto Serif SC', serif;">
+          资质
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Card 1: Designations & Education -->
+          <div class="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)]">
+            <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-[var(--accent-wood)] mb-2.5">
+              执业资质与学历
+            </h3>
+            <ul class="space-y-2 text-xs text-[var(--text-secondary)] leading-relaxed">
+              {educationItems.map((item) => (
+                <li class="flex items-start gap-2">
+                  <span class="text-[var(--accent-sage)] mt-0.5">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Card 2: AI & Technology -->
+          <div class="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)]">
+            <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-[var(--accent-wood)] mb-2.5">
+              AI 与前沿技术
+            </h3>
+            <ul class="space-y-2 text-xs text-[var(--text-secondary)] leading-relaxed">
+              {aiItems.map((item) => (
+                <li class="flex items-start gap-2">
+                  <span class="text-[var(--accent-sage)] mt-0.5">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Minimalist Footer with Online links -->
+    <footer class="pt-8 mt-12 border-t border-[var(--border-color)] flex flex-col sm:flex-row items-center justify-between text-xs text-[var(--text-muted)] gap-3 font-mono">
+      <div>
+        © 2026 Sophie Xu, CPA · 保留所有权利
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://www.linkedin.com/in/sophie-xu-cpa/" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--text-primary)] transition-colors">
+          LinkedIn
+        </a>
+        <span>•</span>
+        <a href="https://github.com/sophiexuxlx-source" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--text-primary)] transition-colors">
+          GitHub
+        </a>
+        <span>•</span>
+        <a href="#" class="hover:text-[var(--text-primary)] transition-colors">回到顶部 ↑</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script is:inline>
+    const themeBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+
+    function updateIcon(theme) {
+      if (themeIcon) {
+        themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+      }
+    }
+
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    updateIcon(currentTheme);
+
+    themeBtn?.addEventListener('click', () => {
+      const active = document.documentElement.getAttribute('data-theme');
+      const next = active === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('sophie.theme', next);
+      updateIcon(next);
+    });
+  </script>
+</body>
+</html>

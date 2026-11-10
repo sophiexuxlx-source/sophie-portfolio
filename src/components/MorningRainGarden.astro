@@ -1,0 +1,1128 @@
+---
+// High-End Interactive Morning Rain Garden (Cinematic 3D Living Canvas)
+interface Props {
+  lang?: 'zh' | 'en';
+}
+
+const { lang = 'zh' } = Astro.props;
+const isZh = lang === 'zh';
+---
+
+<div
+  id="garden-3d-root"
+  data-lang={lang}
+  class="fixed inset-0 z-50 bg-[#0E0E10] hidden transition-opacity duration-700 overflow-hidden select-none"
+  style="perspective: 1200px;"
+>
+  
+  <!-- Cinematic 3D Camera / Scene Container (Smooth 3D Camera Pan & Zoom) -->
+  <div
+    id="sceneContainer"
+    class="absolute inset-[-60px] will-change-transform"
+    style="transform-style: preserve-3d; transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);"
+  >
+    <!-- Photorealistic Study Room & Window Scenery Background Image -->
+    <div
+      id="porchBg"
+      class="absolute inset-0 bg-cover bg-center filter brightness-[0.98] contrast-[1.02]"
+      style="background-image: url('/sophie_lofi_cozy_study.jpg');"
+    >
+      <!-- Soft Ambient Fog / Window Glow Overlay -->
+      <div class="absolute inset-0 bg-gradient-to-t from-stone-950/40 via-transparent to-amber-50/10 mix-blend-soft-light"></div>
+    </div>
+
+    <!-- Ambient Interactive Lamp Light Glow Overlay -->
+    <div
+      id="ambientLampGlow"
+      class="absolute inset-0 pointer-events-none z-5 transition-opacity duration-700 opacity-100 mix-blend-screen"
+      style="background: radial-gradient(circle at 51% 28%, rgba(255, 200, 120, 0.28) 0%, rgba(255, 170, 70, 0.12) 35%, transparent 70%);"
+    ></div>
+
+    <!-- Real-Time Rain & Dynamic Sliding Glass Droplets Canvas (STRICTLY outside the window glass! Room/desk/Sophie 100% dry) -->
+    <div
+      class="absolute inset-0 pointer-events-none z-10 overflow-hidden"
+      style="clip-path: polygon(0% 0%, 45.8% 0%, 45.8% 53.5%, 0% 53.5%);"
+    >
+      <canvas id="rainCanvas" class="w-full h-full"></canvas>
+    </div>
+
+    <!-- ================= PHYSICAL 3D OBJECT HITBOXES & LIVING ELEMENTS ================= -->
+
+    <!-- Hotspot 1: Laptop on Desk (AI Projects) - Covers ENTIRE Laptop (Screen + Keyboard + Base)! -->
+    <div
+      data-module="projects"
+      class="room-object-hotspot absolute left-[14%] top-[57%] w-[28%] h-[39%] z-25 cursor-pointer group rounded-xl"
+      title={isZh ? "点击电脑（屏幕/键盘/机身）：查看 AI 研发项目" : "Click Laptop: Inspect AI Projects"}
+    >
+      <!-- Subtle Ambient Hover Glow -->
+      <div class="absolute inset-0 rounded-xl bg-blue-500/0 group-hover:bg-blue-400/10 transition-colors duration-300 border border-transparent group-hover:border-blue-400/30"></div>
+      <!-- Floating Label -->
+      <div class="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap z-30">
+        <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-stone-900/90 text-blue-300 shadow-xl backdrop-blur-md border border-blue-400/20">
+          {isZh ? "探索 AI 研发项目 (C)" : "Inspect AI Projects (C)"}
+        </span>
+      </div>
+    </div>
+
+    <!-- Hotspot 2: ENTIRE Right Bookshelf (Work Experience) - Covers ALL shelves, books & decor from top to bottom -->
+    <div
+      data-module="work"
+      class="room-object-hotspot absolute left-[68%] top-[0%] w-[32%] h-[100%] z-20 cursor-pointer group rounded-none"
+      title={isZh ? "点击整面书架藏书：翻阅工作经历" : "Click Bookshelf: Inspect Work Experience"}
+    >
+      <div class="absolute inset-0 bg-amber-500/0 group-hover:bg-amber-400/10 transition-colors duration-300 border border-transparent group-hover:border-amber-400/30"></div>
+      <div class="absolute top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap z-30">
+        <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-stone-900/90 text-amber-200 shadow-xl backdrop-blur-md border border-amber-400/20">
+          {isZh ? "翻阅工作经历 (W)" : "Inspect Work Experience (W)"}
+        </span>
+      </div>
+    </div>
+
+    <!-- Hotspot 2B: Windowsill Books by Cat (Work Experience) -->
+    <div
+      data-module="work"
+      class="room-object-hotspot absolute left-[29%] top-[45%] w-[13%] h-[15%] z-20 cursor-pointer group rounded-lg"
+      title={isZh ? "点击书籍：翻阅工作经历" : "Click Books: Inspect Work Experience"}
+    >
+      <div class="absolute inset-0 rounded-lg bg-amber-500/0 group-hover:bg-amber-400/10 transition-colors duration-300 border border-transparent group-hover:border-amber-400/30"></div>
+      <div class="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap z-30">
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-stone-900/90 text-amber-200 shadow-xl backdrop-blur-md border border-amber-400/20">
+          {isZh ? "工作经历 (W)" : "Work Experience (W)"}
+        </span>
+      </div>
+    </div>
+
+    <!-- Hotspot: Desk Lamp Stand & Certificate (Credentials) -->
+    <div
+      data-module="credentials"
+      class="room-object-hotspot absolute left-[0%] top-[45%] w-[14%] h-[48%] z-20 cursor-pointer group rounded-lg"
+      title={isZh ? "点击台灯支架：查看执业资质与认证" : "Inspect Credentials"}
+    >
+      <div class="absolute inset-0 rounded-lg bg-yellow-500/0 group-hover:bg-yellow-400/15 transition-colors duration-300 border border-transparent group-hover:border-yellow-400/30"></div>
+      <div class="absolute top-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap z-30">
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-stone-900/90 text-yellow-200 shadow-xl backdrop-blur-md border border-yellow-400/20">
+          {isZh ? "执业资质与认证 (P)" : "Credentials (P)"}
+        </span>
+      </div>
+    </div>
+
+    <!-- Hotspot 3: Framed Wall Certificate & Desk Journal (Credentials) -->
+    <div
+      data-module="credentials"
+      class="room-object-hotspot absolute left-[52%] top-[8%] w-[15%] h-[20%] z-20 cursor-pointer group rounded-lg"
+      title={isZh ? "点击执业资质与认证" : "Inspect CPA Credentials"}
+    >
+      <div class="absolute inset-0 rounded-lg bg-yellow-500/0 group-hover:bg-yellow-400/15 transition-colors duration-300 border border-transparent group-hover:border-yellow-400/30"></div>
+      <div class="absolute bottom-1 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap z-30">
+        <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-stone-900/90 text-yellow-200 shadow-xl backdrop-blur-md border border-yellow-400/20">
+          {isZh ? "执业资质与认证 (P)" : "Inspect Credentials (P)"}
+        </span>
+      </div>
+    </div>
+
+    <!-- Window Rain Trigger: Clicking ONLY the rainy window pane toggles rain sound (Strictly Left Window) -->
+    <div
+      id="windowRainTrigger"
+      class="absolute left-[0%] top-[0%] w-[45.5%] h-[53.5%] z-15 cursor-pointer group select-none"
+      title={isZh ? "点击窗户：开关窗外真实雨声" : "Click Window: Toggle Rain Audio"}
+    >
+      <div class="absolute top-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap z-30">
+        <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-stone-900/90 text-sky-200 shadow-xl backdrop-blur-md border border-sky-400/20">
+          {isZh ? "点击窗户开关雨声 (M)" : "Click Window to Toggle Rain (M)"}
+        </span>
+      </div>
+    </div>
+
+    <!-- Desk Lamp Glowing Head & Shade (Lamp Glow Switch) -->
+    <div
+      id="deskLampTrigger"
+      class="absolute left-[3%] top-[18%] w-[22%] h-[30%] z-25 cursor-pointer group rounded-2xl select-none"
+      title={isZh ? "点击灯罩：开关温暖书房氛围暖光" : "Click Lamp Head: Toggle Warm Study Ambiance"}
+    >
+      <div class="absolute inset-0 rounded-2xl bg-amber-400/0 group-hover:bg-amber-300/15 transition-colors duration-300 border border-transparent group-hover:border-amber-300/30"></div>
+      <div class="absolute bottom-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap z-30">
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-stone-900/90 text-amber-300 shadow-xl backdrop-blur-md border border-amber-400/30">
+          {isZh ? "点击台灯开关暖光" : "Toggle Lamp Ambiance"}
+        </span>
+      </div>
+    </div>
+
+    <!-- Small Table Lamp on Right Bookshelf (Behind Sophie): Toggles Warm Room Lighting Ambiance -->
+    <div
+      id="lampLightTrigger"
+      class="absolute left-[89%] top-[38%] w-[8%] h-[20%] z-25 cursor-pointer group rounded-2xl select-none"
+      title={isZh ? "点击书架小台灯：开关温暖书房氛围暖光" : "Click Shelf Lamp: Toggle Warm Study Ambiance"}
+    >
+      <div class="absolute inset-0 rounded-2xl bg-amber-400/0 group-hover:bg-amber-300/15 transition-colors duration-300 border border-transparent group-hover:border-amber-300/30"></div>
+      <div class="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap z-30">
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-stone-900/90 text-amber-300 shadow-xl backdrop-blur-md border border-amber-400/30">
+          {isZh ? "点击台灯开关暖光" : "Toggle Lamp Ambiance"}
+        </span>
+      </div>
+    </div>
+
+    <!-- Living Detail A: Animated Sleeping Cat on Desk (Breathing rise & fall + Soft Purring Sound) -->
+    <div
+      id="sleepingCat"
+      class="absolute left-[0%] top-[77%] w-[24.5%] h-[21.5%] z-22 cursor-pointer group pointer-events-auto"
+      title={isZh ? "熟睡小猫 Milo (点击听温柔呼噜声)" : "Sleeping Cat Milo (Click for soft purr)"}
+    >
+      <!-- Animated breathing body layer -->
+      <img
+        src="/cat_breathing_layer.png"
+        alt="Sleeping Cat Breathing Animation"
+        class="cat-breathing w-full h-full object-contain pointer-events-none select-none"
+      />
+      <!-- Hover prompt badge -->
+      <div class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-30">
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium bg-stone-900/90 text-amber-200 border border-amber-400/20 shadow-lg">
+          {isZh ? "小猫熟睡中 · 呼吸轻打呼噜 ~" : "Milo is purring softly ~"}
+        </span>
+      </div>
+    </div>
+
+    <!-- Living Detail B: Steaming Hot Coffee Wisps (Delicate Animated Vapor) -->
+    <div class="absolute left-[46.5%] top-[56%] w-[6%] h-[11%] z-18 pointer-events-none overflow-visible">
+      <div class="steam-wisp steam-particle-1"></div>
+      <div class="steam-wisp steam-particle-2"></div>
+      <div class="steam-wisp steam-particle-3"></div>
+    </div>
+
+    <!-- Hotspot 4: ONLY Sophie Herself (About Sophie) - Strictly Sophie's body & sweater (Does NOT touch bookshelf!) -->
+    <div
+      data-module="about"
+      class="room-object-hotspot absolute left-[49%] top-[26%] w-[19%] h-[72%] z-20 cursor-pointer group rounded-2xl"
+      title={isZh ? "点击了解 Sophie" : "Click to view About Sophie"}
+    >
+      <div class="absolute inset-0 rounded-2xl bg-amber-500/0 group-hover:bg-amber-400/10 transition-colors duration-300 border border-transparent group-hover:border-amber-400/30"></div>
+      <div class="absolute top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap z-30">
+        <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-stone-900/90 text-amber-200 shadow-xl backdrop-blur-md border border-amber-400/20">
+          {isZh ? "关于 Sophie (A)" : "About Sophie (A)"}
+        </span>
+      </div>
+    </div>
+
+  </div> <!-- End sceneContainer -->
+
+  <!-- Hidden Native Audio Element with real 3-min studio recording -->
+  <audio id="realRainAudio" loop preload="auto">
+    <source src="/morning_rain.mp3" type="audio/mpeg" />
+    <source src="/morning_rain.ogg" type="audio/ogg" />
+  </audio>
+
+  <!-- Bottom Interaction Navigation Deck (Clean Minimalist Dock - No Icons) -->
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 pointer-events-none z-30 text-center w-full max-w-3xl px-4">
+    <!-- Wide Room View Controls -->
+    <div id="deckWideView" class="inline-flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2 rounded-full text-xs font-mono font-medium bg-stone-900/90 text-white/90 shadow-2xl backdrop-blur-md border border-white/10 pointer-events-auto transition-all">
+      <a
+        href={isZh ? "/zh?reading=1" : "/?reading=1"}
+        id="exitGardenBtn"
+        class="hover:text-emerald-300 transition-colors px-2 py-0.5 rounded text-stone-200"
+        title={isZh ? "切换到极简阅读模式" : "Switch to Lo-Fi reading mode"}
+      >
+        {isZh ? "极简阅读" : "LO-FI"}
+      </a>
+      <span class="text-stone-600">|</span>
+      <button type="button" data-zoom-target="projects" class="deck-btn hover:text-blue-300 transition-colors px-1.5 py-0.5 rounded">
+        {isZh ? "电脑 (C)" : "Laptop (C)"}
+      </button>
+      <span class="text-stone-600">•</span>
+      <button type="button" data-zoom-target="work" class="deck-btn hover:text-amber-200 transition-colors px-1.5 py-0.5 rounded">
+        {isZh ? "书籍 (W)" : "Books (W)"}
+      </button>
+      <span class="text-stone-600">•</span>
+      <button type="button" data-zoom-target="credentials" class="deck-btn hover:text-yellow-200 transition-colors px-1.5 py-0.5 rounded">
+        {isZh ? "资质 (P)" : "Credentials (P)"}
+      </button>
+      <span class="text-stone-600">•</span>
+      <button type="button" data-zoom-target="about" class="deck-btn hover:text-pink-300 transition-colors px-1.5 py-0.5 rounded">
+        {isZh ? "关于 (A)" : "About (A)"}
+      </button>
+      <span class="text-stone-600">|</span>
+      <button
+        type="button"
+        id="rainAudioBtn"
+        class="hover:text-emerald-300 transition-colors px-2 py-0.5 rounded text-emerald-300 flex items-center gap-1"
+        title={isZh ? "开关真实雨声 (M)" : "Toggle rain sound (M)"}
+      >
+        <span id="rainAudioDot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="rainAudioText">{isZh ? "雨声：开 (M)" : "Rain: ON (M)"}</span>
+      </button>
+    </div>
+
+    <!-- Zoomed In Focus View Control (Back to Desk Pill - No Icons) -->
+    <div id="deckZoomView" class="hidden transition-all duration-300 pointer-events-auto">
+      <button
+        id="backToDeskBtn"
+        type="button"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-mono font-semibold bg-stone-900/95 hover:bg-stone-900 text-amber-300 shadow-2xl backdrop-blur-md border border-amber-400/30 transition-all hover:scale-105"
+      >
+        <span>{isZh ? "返回全景 (ESC)" : "Back to Desk (ESC)"}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Focused 3D Object Overlay Card (Appears gracefully when camera zooms in) -->
+  <div
+    id="zoomCardOverlay"
+    class="fixed inset-0 z-40 pointer-events-none flex items-center justify-center p-4 sm:p-8 opacity-0 transition-opacity duration-500 hidden"
+  >
+    <div
+      id="zoomCardInner"
+      class="pointer-events-auto bg-[#FDFBF7]/95 dark:bg-[#1E1E22]/95 text-stone-800 dark:text-stone-100 rounded-2xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-stone-200/80 dark:border-stone-700/80 backdrop-blur-xl transform translate-y-6 scale-95 transition-all duration-500"
+    >
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <span id="zoomCardIcon" class="hidden"></span>
+          <div>
+            <h3 id="zoomCardTitle" class="text-xl sm:text-2xl font-bold tracking-tight text-stone-900 dark:text-white"></h3>
+            <p id="zoomCardSubtitle" class="text-xs font-mono text-stone-500 dark:text-stone-400 mt-0.5"></p>
+          </div>
+        </div>
+        <button
+          id="closeZoomCardBtn"
+          type="button"
+          class="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-600 dark:text-stone-300 flex items-center justify-center text-sm font-bold transition-colors"
+          title="Close (ESC)"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- Injected Body Content -->
+      <div id="zoomCardContent" class="space-y-4 max-h-[60vh] overflow-y-auto pr-1"></div>
+
+      <!-- Card Footer -->
+      <div class="pt-4 mt-4 border-t border-stone-200/60 dark:border-stone-700/60 flex items-center justify-between text-xs text-stone-500">
+        <span class="font-mono">{isZh ? "按 ESC 返回全景" : "Press ESC to return"}</span>
+        <a
+          href={isZh ? "/zh?reading=1" : "/?reading=1"}
+          class="font-semibold text-emerald-700 dark:text-emerald-400 hover:underline"
+        >
+          {isZh ? "切换为纯享阅读模式 →" : "View Lo-Fi Reading Mode →"}
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ================= 1. Language & State =================
+  const root = document.getElementById('garden-3d-root');
+  const currentLang = root?.getAttribute('data-lang') || 'zh';
+  const isZh = currentLang === 'zh' || window.location.pathname.startsWith('/zh');
+
+  const container = document.getElementById('sceneContainer');
+  const deckWideView = document.getElementById('deckWideView');
+  const deckZoomView = document.getElementById('deckZoomView');
+  const zoomCardOverlay = document.getElementById('zoomCardOverlay');
+  const zoomCardInner = document.getElementById('zoomCardInner');
+  const zoomCardIcon = document.getElementById('zoomCardIcon');
+  const zoomCardTitle = document.getElementById('zoomCardTitle');
+  const zoomCardSubtitle = document.getElementById('zoomCardSubtitle');
+  const zoomCardContent = document.getElementById('zoomCardContent');
+
+  let currentZoomModule: string | null = null;
+  let isZoomed = false;
+
+  // ================= 2. 3D Camera Presets (Cinematic Glide) =================
+  // Defines the 3D camera pan, tilt, and focal zoom for each physical object on the desk
+  const cameraPresets: Record<string, { scale: number; x: number; y: number; rotX: number; rotY: number }> = {
+    // Glide toward the Laptop (Screen + Keyboard)
+    projects: { scale: 2.15, x: 280, y: 50, rotX: -1, rotY: 3 },
+    // Glide toward the Right Bookshelf
+    work: { scale: 2.15, x: -320, y: 60, rotX: 0, rotY: -3 },
+    // Tilt toward the Wall Certificate & Credentials
+    credentials: { scale: 2.2, x: 160, y: 80, rotX: -1, rotY: 2 },
+    // Glide toward Sophie in the caramel sweater
+    about: { scale: 2.05, x: -160, y: 50, rotX: 0, rotY: -2 },
+  };
+
+  // Base Parallax variables for wide view
+  let mouseX = 0, mouseY = 0;
+  let currentRotX = 0, currentRotY = 0;
+
+  window.addEventListener('mousemove', (e) => {
+    if (isZoomed) return; // Freeze parallax while focused on an object
+    const xPct = (e.clientX / window.innerWidth) - 0.5;
+    const yPct = (e.clientY / window.innerHeight) - 0.5;
+    mouseX = xPct * 7;
+    mouseY = -yPct * 5;
+  });
+
+  function updateCameraLoop() {
+    if (!isZoomed && container) {
+      currentRotX += (mouseY - currentRotX) * 0.06;
+      currentRotY += (mouseX - currentRotY) * 0.06;
+      container.style.transform = `scale(1.05) translate3d(${currentRotY * 2.5}px, ${-currentRotX * 2.5}px, 0) rotateX(${currentRotX}deg) rotateY(${currentRotY}deg)`;
+    }
+    requestAnimationFrame(updateCameraLoop);
+  }
+
+  // ================= 3. Zoom-in 3D Animation =================
+  function zoomToObject(mod: string) {
+    if (!container || !cameraPresets[mod]) return;
+    isZoomed = true;
+    currentZoomModule = mod;
+
+    const p = cameraPresets[mod];
+    // Smooth 3D camera translation & zoom directly to target object
+    container.style.transform = `scale(${p.scale}) translate3d(${p.x}px, ${p.y}px, 60px) rotateX(${p.rotX}deg) rotateY(${p.rotY}deg)`;
+
+    // Switch Bottom Dock
+    deckWideView?.classList.add('hidden');
+    deckZoomView?.classList.remove('hidden');
+
+    // Populate and slide in the focused overlay card
+    const data = isZh ? modalDataZh[mod] : modalDataEn[mod];
+    if (data && zoomCardIcon && zoomCardTitle && zoomCardSubtitle && zoomCardContent) {
+      zoomCardIcon.textContent = data.icon;
+      zoomCardTitle.textContent = data.title;
+      zoomCardSubtitle.textContent = data.subtitle;
+      zoomCardContent.innerHTML = data.content;
+
+      // Reveal card after camera glide begins
+      zoomCardOverlay?.classList.remove('hidden');
+      setTimeout(() => {
+        zoomCardOverlay?.classList.remove('opacity-0', 'pointer-events-none');
+        zoomCardInner?.classList.remove('translate-y-6', 'scale-95');
+      }, 350);
+    }
+  }
+
+  function resetToDesk() {
+    if (!isZoomed || !container) return;
+    isZoomed = false;
+    currentZoomModule = null;
+
+    // Hide Card
+    zoomCardOverlay?.classList.add('opacity-0', 'pointer-events-none');
+    zoomCardInner?.classList.add('translate-y-6', 'scale-95');
+    setTimeout(() => {
+      zoomCardOverlay?.classList.add('hidden');
+    }, 450);
+
+    // Switch Bottom Dock
+    deckZoomView?.classList.add('hidden');
+    deckWideView?.classList.remove('hidden');
+
+    // Smoothly fly camera back to wide room view
+    container.style.transform = `scale(1.05) translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg)`;
+  }
+
+  // Wire up Room Object Click Handlers
+  document.querySelectorAll('.room-object-hotspot').forEach((el) => {
+    el.addEventListener('click', () => {
+      const mod = el.getAttribute('data-module');
+      if (mod) zoomToObject(mod);
+    });
+  });
+
+  // Wire up Bottom Deck Buttons
+  document.querySelectorAll('[data-zoom-target]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-zoom-target');
+      if (target) zoomToObject(target);
+    });
+  });
+
+  // Back to desk triggers
+  document.getElementById('backToDeskBtn')?.addEventListener('click', resetToDesk);
+  document.getElementById('closeZoomCardBtn')?.addEventListener('click', resetToDesk);
+  zoomCardOverlay?.addEventListener('click', (e) => {
+    if (e.target === zoomCardOverlay) resetToDesk();
+  });
+
+  // Keyboard Navigation (Felix Rieseberg Style Hotkeys!)
+  window.addEventListener('keydown', (e) => {
+    const key = e.key.toLowerCase();
+    if (e.key === 'Escape') {
+      resetToDesk();
+      return;
+    }
+    if (isZoomed) return;
+
+    if (key === 'c') zoomToObject('projects');
+    if (key === 'w' || key === 'b') zoomToObject('work');
+    if (key === 'p') zoomToObject('credentials');
+    if (key === 'a') zoomToObject('about');
+    if (key === 'm') toggleAudio();
+  });
+
+  // ================= 4. Audio Control =================
+  const audio = document.getElementById('realRainAudio') as HTMLAudioElement;
+  const audioBtn = document.getElementById('rainAudioBtn');
+  const audioText = document.getElementById('rainAudioText');
+  const audioDot = document.getElementById('rainAudioDot');
+  let isPlaying = true; // Default ON as user requested!
+
+  function updateAudioUI(playing: boolean) {
+    if (audioText) {
+      audioText.textContent = playing 
+        ? (isZh ? '雨声：开 (M)' : 'Rain: ON (M)') 
+        : (isZh ? '雨声：关 (M)' : 'Rain: OFF (M)');
+    }
+    if (audioDot) {
+      if (playing) {
+        audioDot.classList.remove('hidden');
+        audioBtn?.classList.add('text-emerald-300');
+        audioBtn?.classList.remove('text-stone-400');
+      } else {
+        audioDot.classList.add('hidden');
+        audioBtn?.classList.remove('text-emerald-300');
+        audioBtn?.classList.add('text-stone-400');
+      }
+    }
+  }
+
+  function playAudio() {
+    if (!audio) return;
+    audio.volume = 0.55;
+    isPlaying = true;
+    updateAudioUI(true);
+    audio.play().catch(() => {
+      // Autoplay blocked by browser policy -> attach one-shot gesture listeners
+      const resumeOnGesture = () => {
+        if (!isPlaying) return;
+        audio.play().catch(() => {});
+        window.removeEventListener('pointerdown', resumeOnGesture);
+        window.removeEventListener('keydown', resumeOnGesture);
+      };
+      window.addEventListener('pointerdown', resumeOnGesture, { once: true });
+      window.addEventListener('keydown', resumeOnGesture, { once: true });
+    });
+  }
+
+  function toggleAudio() {
+    if (!audio) return;
+    if (!isPlaying) {
+      playAudio();
+    } else {
+      audio.pause();
+      isPlaying = false;
+      updateAudioUI(false);
+    }
+  }
+
+  const windowRainTrigger = document.getElementById('windowRainTrigger');
+
+  // Rain audio toggle: ONLY the bottom dock button and the window trigger
+  audioBtn?.addEventListener('click', toggleAudio);
+  windowRainTrigger?.addEventListener('click', toggleAudio);
+
+  // ================= 5. Lamp (Desk + Ceiling) & Cat Interactive Handlers =================
+  const lampLightTrigger = document.getElementById('lampLightTrigger');
+  const deskLampTrigger = document.getElementById('deskLampTrigger');
+  const ambientLampGlow = document.getElementById('ambientLampGlow');
+  let isLampOn = true;
+
+  function toggleLamp() {
+    isLampOn = !isLampOn;
+    if (ambientLampGlow) {
+      if (isLampOn) {
+        ambientLampGlow.classList.remove('opacity-0');
+        ambientLampGlow.classList.add('opacity-100');
+      } else {
+        ambientLampGlow.classList.remove('opacity-100');
+        ambientLampGlow.classList.add('opacity-0');
+      }
+    }
+  }
+
+  lampLightTrigger?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleLamp();
+  });
+
+  deskLampTrigger?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleLamp();
+  });
+
+  // Synthesized Cat Purr Generator (Soothing 25Hz Bio-Acoustic Feline Purr)
+  let purrAudioCtx: AudioContext | null = null;
+  let purrOsc: OscillatorNode | null = null;
+  let purrGain: GainNode | null = null;
+  let purrMod: OscillatorNode | null = null;
+  let isPurring = false;
+
+  function toggleCatPurr() {
+    try {
+      if (!purrAudioCtx) {
+        purrAudioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      if (purrAudioCtx.state === 'suspended') {
+        purrAudioCtx.resume();
+      }
+
+      if (isPurring) {
+        purrGain?.gain.setTargetAtTime(0, purrAudioCtx.currentTime, 0.2);
+        setTimeout(() => {
+          purrOsc?.stop();
+          purrMod?.stop();
+          isPurring = false;
+        }, 300);
+      } else {
+        purrOsc = purrAudioCtx.createOscillator();
+        purrOsc.type = 'triangle';
+        purrOsc.frequency.setValueAtTime(26, purrAudioCtx.currentTime);
+
+        purrMod = purrAudioCtx.createOscillator();
+        purrMod.type = 'sine';
+        purrMod.frequency.setValueAtTime(24, purrAudioCtx.currentTime);
+
+        const modGain = purrAudioCtx.createGain();
+        modGain.gain.setValueAtTime(0.5, purrAudioCtx.currentTime);
+
+        purrGain = purrAudioCtx.createGain();
+        purrGain.gain.setValueAtTime(0.01, purrAudioCtx.currentTime);
+        purrGain.gain.setTargetAtTime(0.18, purrAudioCtx.currentTime, 0.4);
+
+        purrMod.connect(modGain);
+        purrOsc.connect(purrGain);
+        purrGain.connect(purrAudioCtx.destination);
+
+        purrOsc.start();
+        purrMod.start();
+        isPurring = true;
+      }
+    } catch (e) {
+      console.warn('Cat purr audio not supported:', e);
+    }
+  }
+
+  const sleepingCat = document.getElementById('sleepingCat');
+  sleepingCat?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleCatPurr();
+    sleepingCat.classList.add('scale-105');
+    setTimeout(() => sleepingCat.classList.remove('scale-105'), 350);
+  });
+
+  // ================= 6. Window Rain & Dynamic Glass Sliding Droplets Simulation =================
+  const canvas = document.getElementById('rainCanvas') as HTMLCanvasElement;
+  const ctx = canvas?.getContext('2d');
+
+  interface RainStreak {
+    x: number;
+    y: number;
+    speed: number;
+    length: number;
+    opacity: number;
+    slant: number;
+  }
+
+  interface GlassDroplet {
+    x: number;
+    y: number;
+    radius: number;
+    speed: number;
+    wobble: number;
+    wobbleSpeed: number;
+    trail: { x: number; y: number }[];
+    maxTrail: number;
+    opacity: number;
+  }
+
+  interface StaticBead {
+    x: number;
+    y: number;
+    radius: number;
+    opacity: number;
+  }
+
+  interface Splash {
+    x: number;
+    y: number;
+    radius: number;
+    maxRadius: number;
+    opacity: number;
+  }
+
+  const streaks: RainStreak[] = [];
+  const glassDrops: GlassDroplet[] = [];
+  const staticBeads: StaticBead[] = [];
+  const splashes: Splash[] = [];
+
+  const STREAK_COUNT = 85;
+  const GLASS_DROP_COUNT = 24;
+  const STATIC_BEAD_COUNT = 45;
+
+  function resizeCanvas() {
+    if (!canvas) return;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function initRain() {
+    if (!canvas) return;
+    resizeCanvas();
+    streaks.length = 0;
+    glassDrops.length = 0;
+    staticBeads.length = 0;
+    splashes.length = 0;
+
+    const windowWidth = canvas.width * 0.458;
+    const windowHeight = canvas.height * 0.535;
+
+    // 1. Outside falling rain streaks
+    for (let i = 0; i < STREAK_COUNT; i++) {
+      streaks.push({
+        x: Math.random() * windowWidth,
+        y: Math.random() * windowHeight,
+        speed: 11 + Math.random() * 13,
+        length: 14 + Math.random() * 18,
+        opacity: 0.22 + Math.random() * 0.45,
+        slant: -1.2 + Math.random() * 0.4,
+      });
+    }
+
+    // 2. Active sliding water beads on window pane
+    for (let i = 0; i < GLASS_DROP_COUNT; i++) {
+      glassDrops.push({
+        x: Math.random() * (windowWidth - 20) + 10,
+        y: Math.random() * windowHeight,
+        radius: 1.6 + Math.random() * 2.6,
+        speed: 0.35 + Math.random() * 1.25,
+        wobble: Math.random() * Math.PI * 2,
+        wobbleSpeed: 0.04 + Math.random() * 0.06,
+        trail: [],
+        maxTrail: 12 + Math.floor(Math.random() * 14),
+        opacity: 0.55 + Math.random() * 0.35,
+      });
+    }
+
+    // 3. Static condensation droplets with specular gleam
+    for (let i = 0; i < STATIC_BEAD_COUNT; i++) {
+      staticBeads.push({
+        x: Math.random() * (windowWidth - 10) + 5,
+        y: Math.random() * (windowHeight - 10) + 5,
+        radius: 0.8 + Math.random() * 1.5,
+        opacity: 0.3 + Math.random() * 0.4,
+      });
+    }
+  }
+
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+    initRain();
+  });
+
+  function renderRain() {
+    if (!ctx || !canvas) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const windowWidth = canvas.width * 0.458;
+    const sillY = canvas.height * 0.535;
+
+    // --- Layer A: Draw Static Condensation Beads with Highlights ---
+    for (let i = 0; i < staticBeads.length; i++) {
+      const b = staticBeads[i];
+      ctx.fillStyle = `rgba(200, 225, 245, ${b.opacity * 0.5})`;
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Specular highlight
+      ctx.fillStyle = `rgba(255, 255, 255, ${b.opacity * 0.85})`;
+      ctx.beginPath();
+      ctx.arc(b.x - b.radius * 0.3, b.y - b.radius * 0.3, b.radius * 0.35, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // --- Layer B: Draw Outside Downward Falling Rain Streaks ---
+    ctx.lineWidth = 1.2;
+    for (let i = 0; i < streaks.length; i++) {
+      const d = streaks[i];
+      ctx.strokeStyle = `rgba(215, 235, 250, ${d.opacity})`;
+      ctx.beginPath();
+      ctx.moveTo(d.x, d.y);
+      ctx.lineTo(d.x + d.slant, d.y + d.length);
+      ctx.stroke();
+
+      d.x += d.slant;
+      d.y += d.speed;
+
+      if (d.y > sillY - 18 && d.y < sillY && Math.random() < 0.22) {
+        splashes.push({
+          x: d.x,
+          y: d.y,
+          radius: 1,
+          maxRadius: 3 + Math.random() * 3,
+          opacity: 0.45,
+        });
+      }
+
+      if (d.y > sillY || d.x > windowWidth || d.x < 0) {
+        d.y = -10;
+        d.x = Math.random() * windowWidth;
+      }
+    }
+
+    // --- Layer C: Draw Dynamic Sliding Glass Drops & Wet Trails ---
+    for (let i = 0; i < glassDrops.length; i++) {
+      const g = glassDrops[i];
+
+      // Draw faint wet trail left behind by sliding drop
+      if (g.trail.length > 1) {
+        ctx.strokeStyle = `rgba(210, 230, 245, ${g.opacity * 0.25})`;
+        ctx.lineWidth = g.radius * 0.8;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(g.trail[0].x, g.trail[0].y);
+        for (let t = 1; t < g.trail.length; t++) {
+          ctx.lineTo(g.trail[t].x, g.trail[t].y);
+        }
+        ctx.stroke();
+      }
+
+      // Record current position into trail
+      g.trail.push({ x: g.x, y: g.y });
+      if (g.trail.length > g.maxTrail) g.trail.shift();
+
+      // Draw Glass Droplet Body (Translucent Water Drop)
+      const grad = ctx.createRadialGradient(
+        g.x - g.radius * 0.3, g.y - g.radius * 0.3, g.radius * 0.1,
+        g.x, g.y, g.radius
+      );
+      grad.addColorStop(0, `rgba(255, 255, 255, ${g.opacity * 0.95})`);
+      grad.addColorStop(0.5, `rgba(210, 235, 255, ${g.opacity * 0.6})`);
+      grad.addColorStop(1, `rgba(160, 195, 220, ${g.opacity * 0.35})`);
+
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.ellipse(g.x, g.y, g.radius, g.radius * 1.25, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Specular Glint
+      ctx.fillStyle = `rgba(255, 255, 255, ${g.opacity * 0.9})`;
+      ctx.beginPath();
+      ctx.arc(g.x - g.radius * 0.35, g.y - g.radius * 0.4, g.radius * 0.3, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Update position with natural sliding physics and surface tension wobble
+      g.wobble += g.wobbleSpeed;
+      g.x += Math.sin(g.wobble) * 0.22;
+      g.y += g.speed;
+
+      // When reaching windowsill, reset to top of window
+      if (g.y > sillY - 4) {
+        g.y = -5;
+        g.x = Math.random() * (windowWidth - 20) + 10;
+        g.trail = [];
+        g.speed = 0.35 + Math.random() * 1.25;
+      }
+    }
+
+    // --- Layer D: Render splashes on sill ---
+    for (let j = splashes.length - 1; j >= 0; j--) {
+      const s = splashes[j];
+      ctx.strokeStyle = `rgba(225, 240, 250, ${s.opacity})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.ellipse(s.x, s.y, s.radius * 1.6, s.radius * 0.5, 0, 0, Math.PI * 2);
+      ctx.stroke();
+
+      s.radius += 0.4;
+      s.opacity -= 0.03;
+      if (s.opacity <= 0) splashes.splice(j, 1);
+    }
+
+    requestAnimationFrame(renderRain);
+  }
+
+    // ================= 6. Bilingual Modal Content Data =================
+  const modalDataZh: Record<string, { title: string; icon: string; subtitle: string; content: string }> = {
+    work: {
+      title: '工作经历',
+      icon: '📚',
+      subtitle: '8 年+ 跨国企业财务报告与保险会计经验（加拿大安大略省）',
+      content: `
+        <div class="space-y-2.5 text-sm text-stone-700 dark:text-stone-300">
+          <div class="flex justify-between py-2 border-b border-stone-200 dark:border-stone-700">
+            <strong class="text-stone-900 dark:text-white">Oriens Alulin Products Inc.</strong>
+            <span class="text-xs font-mono text-stone-500">安大略省多伦多</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-stone-200 dark:border-stone-700">
+            <strong class="text-stone-900 dark:text-white">CAA Insurance (CAA Club Group)</strong>
+            <span class="text-xs font-mono text-stone-500">安大略省万锦</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-stone-200 dark:border-stone-700">
+            <strong class="text-stone-900 dark:text-white">Aurora Group</strong>
+            <span class="text-xs font-mono text-stone-500">安大略省旺市</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-stone-200 dark:border-stone-700">
+            <strong class="text-stone-900 dark:text-white">Toronto Auto Group</strong>
+            <span class="text-xs font-mono text-stone-500">安大略省多伦多</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-stone-200 dark:border-stone-700">
+            <strong class="text-stone-900 dark:text-white">Teva Canada</strong>
+            <span class="text-xs font-mono text-stone-500">安大略省多伦多</span>
+          </div>
+        </div>
+      `,
+    },
+    projects: {
+      title: '精选 AI 研发项目',
+      icon: '💻',
+      subtitle: '生产级多模态语音智能体与企业财务自动化管线',
+      content: `
+        <div class="space-y-3 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
+          <div class="p-3.5 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">SoMeet — 实时语音智能会议工作台</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">基于 WebSockets 将 16kHz 音频实时流式传输至多模态大模型，自动化生成高管决策纪要与行动矩阵。</p>
+            <div class="flex gap-3 mt-2.5">
+              <a href="/someet_demo.mp4" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs">演示视频 ↗</a>
+              <a href="https://github.com/sophiexuxlx-source/someet-web" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs">GitHub ↗</a>
+            </div>
+          </div>
+          <div class="p-3.5 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Autonomous Executive WBR Pipeline</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">自动化执行 SQL 指标提取、无头刷新 Excel 财务模型，并结合大模型自动生成高管层方差归因分析。</p>
+            <a href="https://github.com/sophiexuxlx-source/autonomous-executive-wbr-pipeline" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+          <div class="p-3.5 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Cross-Border Tax & Tariff Engine</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">针对多币种落地成本、跨境海关关税及汇率对冲场景的交互式试算分析工具。</p>
+            <a href="https://github.com/sophiexuxlx-source" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+        </div>
+      `,
+    },
+    credentials: {
+      title: '执业资质与认证',
+      icon: '📜',
+      subtitle: '加拿大注册会计师执照与前沿 AI 架构认证',
+      content: `
+        <ul class="space-y-2.5 text-sm text-stone-700 dark:text-stone-300">
+          <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">•</span> 加拿大注册会计师 (CPA) — 安省注册会计师协会 (CPA Ontario)</li>
+          <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">•</span> 约克大学商学学士（会计学荣誉学士 B.Com. Honours）</li>
+          <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">•</span> 加拿大保险会计师协会认证 (CIAA)</li>
+          <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">•</span> 认证 AI 架构师 & AI 开发者 (Certified AI Architect & Builder)</li>
+          <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">•</span> Anthropic 专项 AI 认证</li>
+          <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">•</span> 自主智能体系统与 Python 数据管线开发</li>
+        </ul>
+      `,
+    },
+    about: {
+      title: '关于 Sophie',
+      icon: '🌷',
+      subtitle: '加拿大注册会计师与 AI 开发者',
+      content: `
+        <div class="space-y-3 text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
+          <p class="font-semibold text-stone-900 dark:text-white">我是加拿大注册会计师与 AI 开发者。</p>
+          <p>我专注于将严谨的企业财务逻辑与生产级现代 AI 技术融合。</p>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/80 rounded-xl border border-stone-200 dark:border-stone-700">
+            <div class="text-[11px] font-mono font-semibold text-emerald-700 dark:text-emerald-400">最新专栏发表 · LinkedIn Pulse</div>
+            <div class="font-bold text-xs text-stone-900 dark:text-white mt-1">A CPA's Journey to an AI Architect</div>
+            <p class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">为何我从 Chatbot 对话、进阶到 AI Builder，并最终走向生产级 AI 架构师。</p>
+            <a href="https://www.linkedin.com/pulse/my-journey-ai-architect-sophie-xu-cpa-nehmc/" target="_blank" class="text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:underline inline-flex items-center gap-1 mt-1.5">在 LinkedIn 阅读全文 ↗</a>
+          </div>
+
+          <div class="flex gap-4 pt-1">
+            <a href="https://www.linkedin.com/in/sophie-xu-cpa/" target="_blank" class="text-xs font-semibold text-stone-900 dark:text-white underline">LinkedIn ↗</a>
+            <a href="https://github.com/sophiexuxlx-source" target="_blank" class="text-xs font-semibold text-stone-900 dark:text-white underline">GitHub ↗</a>
+          </div>
+        </div>
+      `,
+    },
+  };
+
+  const modalDataEn: Record<string, { title: string; icon: string; subtitle: string; content: string }> = {
+    work: {
+      title: 'Work Experience',
+      icon: '📚',
+      subtitle: '8+ Years in Corporate Finance & Insurance Analysis (Ontario, Canada)',
+      content: `
+        <div class="space-y-2.5 text-sm text-stone-700 dark:text-stone-300">
+          <div class="flex justify-between py-2 border-b border-stone-200 dark:border-stone-700">
+            <strong class="text-stone-900 dark:text-white">Oriens Alulin Products Inc.</strong>
+            <span class="text-xs font-mono text-stone-500">Toronto, Ontario</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-stone-200 dark:border-stone-700">
+            <strong class="text-stone-900 dark:text-white">CAA Insurance (CAA Club Group)</strong>
+            <span class="text-xs font-mono text-stone-500">Markham, Ontario</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-stone-200 dark:border-stone-700">
+            <strong class="text-stone-900 dark:text-white">Aurora Group</strong>
+            <span class="text-xs font-mono text-stone-500">Vaughan, Ontario</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-stone-200 dark:border-stone-700">
+            <strong class="text-stone-900 dark:text-white">Toronto Auto Group</strong>
+            <span class="text-xs font-mono text-stone-500">Toronto, Ontario</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-stone-200 dark:border-stone-700">
+            <strong class="text-stone-900 dark:text-white">Teva Canada</strong>
+            <span class="text-xs font-mono text-stone-500">Toronto, Ontario</span>
+          </div>
+        </div>
+      `,
+    },
+    projects: {
+      title: 'Featured AI Projects',
+      icon: '💻',
+      subtitle: 'Production Speech Intelligence & Financial Automation Systems',
+      content: `
+        <div class="space-y-3 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
+          <div class="p-3.5 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">SoMeet — Real-Time Voice Intelligence Workspace</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Streams 16kHz audio via WebSockets to multimodal LLMs, generating automated executive minutes and action items.</p>
+            <div class="flex gap-3 mt-2.5">
+              <a href="/someet_demo.mp4" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs">Demo Video ↗</a>
+              <a href="https://github.com/sophiexuxlx-source/someet-web" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs">GitHub ↗</a>
+            </div>
+          </div>
+          <div class="p-3.5 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Autonomous Executive WBR Pipeline</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Automates SQL metrics extraction, headlessly refreshes Excel models, and synthesizes variance root cause briefs.</p>
+            <a href="https://github.com/sophiexuxlx-source/autonomous-executive-wbr-pipeline" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+          <div class="p-3.5 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Cross-Border Tax & Tariff Engine</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Interactive landed-cost modeling, multi-currency customs duties, and FX hedging simulation engine.</p>
+            <a href="https://github.com/sophiexuxlx-source" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+        </div>
+      `,
+    },
+    credentials: {
+      title: 'Designations & Credentials',
+      icon: '📜',
+      subtitle: 'Professional Accounting Designations & AI Architecture',
+      content: `
+        <ul class="space-y-2.5 text-sm text-stone-700 dark:text-stone-300">
+          <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">•</span> Chartered Professional Accountant (CPA) — CPA Ontario, Canada</li>
+          <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">•</span> Bachelor of Commerce (B.Com. Honours in Accounting) — York University</li>
+          <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">•</span> Certified Insurance Accounting Associate (CIAA)</li>
+          <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">•</span> Certified AI Architect & AI Builder</li>
+          <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">•</span> Anthropic AI Certification</li>
+          <li class="flex items-center gap-2"><span class="text-emerald-600 font-bold">•</span> Autonomous Agent Architecture & Python Pipelines</li>
+        </ul>
+      `,
+    },
+    about: {
+      title: 'About Sophie',
+      icon: '🌷',
+      subtitle: 'Registered CPA & AI Developer based in Ontario, Canada',
+      content: `
+        <div class="space-y-3 text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
+          <p class="font-semibold text-stone-900 dark:text-white">I am a Canadian CPA and AI Developer.</p>
+          <p>I focus on merging rigorous corporate financial logic with production-grade modern AI technology.</p>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/80 rounded-xl border border-stone-200 dark:border-stone-700">
+            <div class="text-[11px] font-mono font-semibold text-emerald-700 dark:text-emerald-400">Featured Publication · LinkedIn Pulse</div>
+            <div class="font-bold text-xs text-stone-900 dark:text-white mt-1">A CPA's Journey to an AI Architect</div>
+            <p class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">Why I moved from Chatbots to AI Builder, and finally to production-grade AI Architect.</p>
+            <a href="https://www.linkedin.com/pulse/my-journey-ai-architect-sophie-xu-cpa-nehmc/" target="_blank" class="text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:underline inline-flex items-center gap-1 mt-1.5">Read on LinkedIn Pulse ↗</a>
+          </div>
+
+          <div class="flex gap-4 pt-1">
+            <a href="https://www.linkedin.com/in/sophie-xu-cpa/" target="_blank" class="text-xs font-semibold text-stone-900 dark:text-white underline">LinkedIn ↗</a>
+            <a href="https://github.com/sophiexuxlx-source" target="_blank" class="text-xs font-semibold text-stone-900 dark:text-white underline">GitHub ↗</a>
+          </div>
+        </div>
+      `,
+    },
+  };
+
+  // ================= 7. Lifecycle & Entry =================
+  function setupGardenMode() {
+    const rootEl = document.getElementById('garden-3d-root');
+    const urlParams = new URLSearchParams(window.location.search);
+    const prefers3D = urlParams.get('room') === '1' || localStorage.getItem('sophie.view') === 'garden';
+
+    if (prefers3D && urlParams.get('reading') !== '1') {
+      rootEl?.classList.remove('hidden');
+      initRain();
+      renderRain();
+      updateCameraLoop();
+      playAudio(); // Default rain audio ON on entering the study room!
+    } else {
+      rootEl?.classList.add('hidden');
+      if (audio && isPlaying) {
+        audio.pause();
+        isPlaying = false;
+      }
+    }
+  }
+
+  ['gardenToggle', 'lofiPillToggle'].forEach((id) => {
+    document.getElementById(id)?.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.setItem('sophie.view', 'garden');
+      window.location.search = '?room=1';
+    });
+  });
+
+  document.getElementById('exitGardenBtn')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('sophie.view');
+    window.location.search = '?reading=1';
+  });
+
+  setupGardenMode();
+</script>
+
+<style>
+  @keyframes catBreathe {
+    0%, 100% {
+      transform: scaleY(1) scaleX(1) translateY(0);
+      filter: drop-shadow(0 0 0 rgba(0,0,0,0));
+    }
+    38% {
+      /* Inhale: distinct, clearly visible rise of cat back and belly */
+      transform: scaleY(1.10) scaleX(1.03) translateY(-4.5px);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+    }
+    48% {
+      /* Peak of breath */
+      transform: scaleY(1.095) scaleX(1.028) translateY(-4.2px);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.10));
+    }
+    75% {
+      /* Exhale: gentle descent back to rest */
+      transform: scaleY(0.99) scaleX(0.995) translateY(0.5px);
+      filter: drop-shadow(0 0 0 rgba(0,0,0,0));
+    }
+  }
+
+  .cat-breathing {
+    animation: catBreathe 3.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    transform-origin: 45% 90%;
+    will-change: transform, filter;
+  }
+
+  .steam-wisp {
+    position: absolute;
+    bottom: 0;
+    width: 14px;
+    height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 75%);
+    filter: blur(4px);
+    opacity: 0;
+  }
+  @keyframes steamWaft1 {
+    0% { transform: translateY(0) scaleX(0.7) scaleY(0.6); opacity: 0; }
+    25% { opacity: 0.55; }
+    60% { transform: translateY(-24px) scaleX(1.3) scaleY(1.3) translateX(4px); opacity: 0.3; }
+    100% { transform: translateY(-50px) scaleX(2.0) scaleY(1.8) translateX(8px); opacity: 0; }
+  }
+  @keyframes steamWaft2 {
+    0% { transform: translateY(0) scaleX(0.8) scaleY(0.7); opacity: 0; }
+    30% { opacity: 0.6; }
+    65% { transform: translateY(-28px) scaleX(1.4) scaleY(1.4) translateX(-4px); opacity: 0.35; }
+    100% { transform: translateY(-55px) scaleX(2.2) scaleY(1.9) translateX(-9px); opacity: 0; }
+  }
+  @keyframes steamWaft3 {
+    0% { transform: translateY(0) scaleX(0.6) scaleY(0.6); opacity: 0; }
+    20% { opacity: 0.45; }
+    55% { transform: translateY(-22px) scaleX(1.2) scaleY(1.2) translateX(3px); opacity: 0.25; }
+    100% { transform: translateY(-46px) scaleX(1.8) scaleY(1.6) translateX(6px); opacity: 0; }
+  }
+  .steam-particle-1 { left: 15%; animation: steamWaft1 3.4s ease-out infinite; }
+  .steam-particle-2 { left: 45%; animation: steamWaft2 3.8s ease-out 1.2s infinite; }
+  .steam-particle-3 { left: 75%; animation: steamWaft3 4.2s ease-out 2.3s infinite; }
+</style>
