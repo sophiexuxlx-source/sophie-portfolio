@@ -877,28 +877,75 @@ const isZh = lang === 'zh';
       `,
     },
     projects: {
-      title: '精选 AI 研发项目',
+      title: '精选 AI 研发与技术项目',
       icon: '💻',
-      subtitle: '生产级多模态语音智能体与企业财务自动化管线',
+      subtitle: '生产级多模态语音智能体、知识导图、视觉智能与财务自动化管线',
       content: `
         <div class="space-y-3 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
-          <div class="p-3.5 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
             <div class="font-bold text-stone-900 dark:text-white">SoMeet — 实时语音智能会议工作台</div>
             <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">基于 WebSockets 将 16kHz 音频实时流式传输至多模态大模型，自动化生成高管决策纪要与行动矩阵。</p>
-            <div class="flex gap-3 mt-2.5">
+            <div class="flex gap-3 mt-2">
               <a href="/someet_demo.mp4" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs">演示视频 ↗</a>
               <a href="https://github.com/sophiexuxlx-source/someet-web" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs">GitHub ↗</a>
             </div>
           </div>
-          <div class="p-3.5 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
-            <div class="font-bold text-stone-900 dark:text-white">Autonomous Executive WBR Pipeline</div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">AetherMind — 本地优先可视化思维导图与知识画布</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">高颜值本地优先、隐私优先的可视化思维导图工作台，支持平滑贝塞尔曲线分支、自动对称排版与多格式矢量导出（JSON、PNG、SVG、PDF）。</p>
+            <a href="https://github.com/sophiexuxlx-source/AetherMind" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Autonomous Executive WBR Pipeline — 自动化财务智能分析管线</div>
             <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">自动化执行 SQL 指标提取、无头刷新 Excel 财务模型，并结合大模型自动生成高管层方差归因分析。</p>
             <a href="https://github.com/sophiexuxlx-source/autonomous-executive-wbr-pipeline" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
           </div>
-          <div class="p-3.5 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
-            <div class="font-bold text-stone-900 dark:text-white">Cross-Border Tax & Tariff Engine</div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Multimodal Vision Batch Analyzer — 多模态计算机视觉智能批处理平台</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">基于 Google Gemini Vision 多模态大模型与 OpenCV 关键帧提取技术，构建自动化音视频及图像批量分析与智能看板。</p>
+            <a href="https://github.com/sophiexuxlx-source/multimodal-vision-batch-analyzer" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Media Harvesting & Perceptual Deduplication — 智能媒体采集与感知哈希去重管线</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">基于浏览器网络底层拦截与感知差异哈希（dHash）算法的高并发媒体提取与计算机视觉图像去重管线。</p>
+            <a href="https://github.com/sophiexuxlx-source/media-harvesting-and-perceptual-deduplication" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Canadian Tax Calculator & RRSP Planner — 加拿大联邦与省税及 RRSP 节税计算器</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">针对加拿大联邦与安省个人所得税的交互式测算模型，支持边际税率分析与 RRSP 供款节税优化。</p>
+            <a href="https://github.com/sophiexuxlx-source/Canadian-tax-calculator" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Business Structure Analysis — 企业架构与财税规划分析模型</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">综合财务测算工具，深度比对独资（Sole Proprietorship）、合伙（Partnership）与公司制（Incorporation）的税负效益与现金流。</p>
+            <a href="https://github.com/sophiexuxlx-source/Business-Structure-Analysis" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Cross-Border Tax & Tariff Engine — 跨国关税与到岸成本模型</div>
             <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">针对多币种落地成本、跨境海关关税及汇率对冲场景的交互式试算分析工具。</p>
             <a href="https://github.com/sophiexuxlx-source" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Oriens Alulin Web Platform — 制造企业门户与工业产品展示平台</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">为 Oriens Alulin Products Inc. 打造的企业级产品与业务架构展示网站，支持自定义域名解析与极速响应。</p>
+            <div class="flex gap-3 mt-2">
+              <a href="https://oriensalulin.ca" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs">访问官网 ↗</a>
+              <a href="https://github.com/sophiexuxlx-source/oriensalulin" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs">GitHub ↗</a>
+            </div>
+          </div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Neon Snake Arcade — HTML5 Canvas 现代复古街机游戏</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">采用 HTML5 Canvas、现代 CSS3 响应式设计与高效游戏循环物理引擎打造的现代霓虹街机贪吃蛇。</p>
+            <a href="https://github.com/sophiexuxlx-source/Neon-snake" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
           </div>
         </div>
       `,
@@ -974,28 +1021,75 @@ const isZh = lang === 'zh';
       `,
     },
     projects: {
-      title: 'Featured AI Projects',
+      title: 'Featured Projects & Engineering Work',
       icon: '💻',
-      subtitle: 'Production Speech Intelligence & Financial Automation Systems',
+      subtitle: 'Production Speech Intelligence, Knowledge Mapping, Computer Vision & Financial Systems',
       content: `
         <div class="space-y-3 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
-          <div class="p-3.5 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
-            <div class="font-bold text-stone-900 dark:text-white">SoMeet — Real-Time Voice Intelligence Workspace</div>
-            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Streams 16kHz audio via WebSockets to multimodal LLMs, generating automated executive minutes and action items.</p>
-            <div class="flex gap-3 mt-2.5">
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">SoMeet — Real-Time Speech Intelligence Studio</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Production executive meeting platform streaming live 16kHz audio via WebSockets to multimodal LLMs for instant briefings and automated minutes.</p>
+            <div class="flex gap-3 mt-2">
               <a href="/someet_demo.mp4" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs">Demo Video ↗</a>
               <a href="https://github.com/sophiexuxlx-source/someet-web" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs">GitHub ↗</a>
             </div>
           </div>
-          <div class="p-3.5 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
-            <div class="font-bold text-stone-900 dark:text-white">Autonomous Executive WBR Pipeline</div>
-            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Automates SQL metrics extraction, headlessly refreshes Excel models, and synthesizes variance root cause briefs.</p>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">AetherMind — Local-First Visual Mind Mapping Studio</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Premium local-first, privacy-focused visual mind mapping application featuring dynamic Bezier curve branches, auto-layout balancing, and multi-format vector exports (JSON, PNG, SVG, PDF).</p>
+            <a href="https://github.com/sophiexuxlx-source/AetherMind" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Autonomous Executive WBR Pipeline — Financial Intelligence Engine</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Autonomous pipeline extracting SQL metrics, executing headless Excel COM model refreshes, and synthesizing LLM executive variance narratives.</p>
             <a href="https://github.com/sophiexuxlx-source/autonomous-executive-wbr-pipeline" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
           </div>
-          <div class="p-3.5 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
-            <div class="font-bold text-stone-900 dark:text-white">Cross-Border Tax & Tariff Engine</div>
-            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Interactive landed-cost modeling, multi-currency customs duties, and FX hedging simulation engine.</p>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Multimodal Vision Batch Analyzer — Computer Vision Platform</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Batch intelligence platform powered by Google Gemini Vision LLMs, OpenCV keyframe extraction, and Streamlit for automated video and image analysis.</p>
+            <a href="https://github.com/sophiexuxlx-source/multimodal-vision-batch-analyzer" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Media Harvesting & Perceptual Deduplication — CV Pipeline</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Automated media extraction and computer vision deduplication pipeline leveraging browser network interception and perceptual difference hashing (dHash).</p>
+            <a href="https://github.com/sophiexuxlx-source/media-harvesting-and-perceptual-deduplication" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Canadian Tax Calculator & RRSP Planner — Tax Modeler</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Interactive calculation model for combined Federal and Provincial income taxes, marginal tax bracket visualization, and RRSP tax deduction savings.</p>
+            <a href="https://github.com/sophiexuxlx-source/Canadian-tax-calculator" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Business Structure Analysis — Entity & Tax Planning Modeler</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Comprehensive financial modeling tool comparing sole proprietorship, partnership, and corporate structures for tax efficiency and cash flow optimization.</p>
+            <a href="https://github.com/sophiexuxlx-source/Business-Structure-Analysis" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Cross-Border Tax & Tariff Engine — Landed-Cost Model</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Interactive calculation model for multi-currency landed costs, customs tariffs, and currency hedging scenarios.</p>
             <a href="https://github.com/sophiexuxlx-source" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
+          </div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Oriens Alulin Web Platform — Corporate Operations Showcase</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Web presence and product catalog architecture for Oriens Alulin Products Inc. featuring responsive UI, custom domain routing, and performance optimization.</p>
+            <div class="flex gap-3 mt-2">
+              <a href="https://oriensalulin.ca" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs">Live Site ↗</a>
+              <a href="https://github.com/sophiexuxlx-source/oriensalulin" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs">GitHub ↗</a>
+            </div>
+          </div>
+
+          <div class="p-3 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700/60">
+            <div class="font-bold text-stone-900 dark:text-white">Neon Snake Arcade — Canvas Retro Game</div>
+            <p class="text-xs text-stone-600 dark:text-stone-400 mt-1">Modern, responsive take on the classic arcade game built using HTML5 Canvas, modern CSS3 styling, and high-performance game-loop physics.</p>
+            <a href="https://github.com/sophiexuxlx-source/Neon-snake" target="_blank" class="text-emerald-700 dark:text-emerald-400 font-semibold text-xs mt-2 inline-block">GitHub ↗</a>
           </div>
         </div>
       `,
