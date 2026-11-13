@@ -27,6 +27,38 @@ const isZh = lang === 'zh';
       class="absolute inset-0 bg-cover bg-center filter brightness-[0.98] contrast-[1.02]"
       style="background-image: url('/sophie_lofi_cozy_study.jpg');"
     >
+      <!-- Living layers painted inside porchBg so they receive exactly the same colour grading as the painting -->
+      <!-- Paints out the static steam that is baked into the base illustration (clone of the window glass/frame just above);
+           the animated SVG wisps are now the only steam. Original JPG is untouched. -->
+      <img id="steamPaintOut" src="/cozy_steam_paintout.png" alt="" aria-hidden="true" class="absolute pointer-events-none select-none" />
+      <!-- Natural cat breathing: canvas mesh-warp of the painted cat itself. Only the ribcage/back rises
+           (anchored at the cushion); rear, tail, head & background stay still, so no seams and no hip wobble. -->
+      <canvas id="catBreathCanvas" class="cat-breath-canvas absolute pointer-events-none select-none" aria-hidden="true"></canvas>
+      <!-- Living Detail C: Sophie Subtle Anime Blink & Eye-Closure Overlay -->
+      <div
+        id="sophieBlinkZone"
+        class="absolute left-[54.51%] top-[19.53%] w-[12.35%] h-[26.04%] pointer-events-none select-none"
+      >
+        <!-- Hand-built eyelid frames (both eyes): half-closed + closed, swapped like anime key frames -->
+        <img
+          id="sophieBlinkHalf"
+          src="/sophie_blink_half.png"
+          alt=""
+          aria-hidden="true"
+          decoding="sync"
+          class="absolute inset-0 w-full h-full pointer-events-none select-none"
+          style="opacity: 0;"
+        />
+        <img
+          id="sophieBlinkClosed"
+          src="/sophie_blink_closed.png"
+          alt=""
+          aria-hidden="true"
+          decoding="sync"
+          class="absolute inset-0 w-full h-full pointer-events-none select-none"
+          style="opacity: 0;"
+        />
+      </div>
       <!-- Soft Ambient Fog / Window Glow Overlay -->
       <div class="absolute inset-0 bg-gradient-to-t from-stone-950/40 via-transparent to-amber-50/10 mix-blend-soft-light"></div>
     </div>
@@ -36,7 +68,12 @@ const isZh = lang === 'zh';
       id="ambientLampGlow"
       class="absolute inset-0 pointer-events-none z-5 transition-opacity duration-700 opacity-100 mix-blend-screen"
       style="background: radial-gradient(circle at 51% 28%, rgba(255, 200, 120, 0.28) 0%, rgba(255, 170, 70, 0.12) 35%, transparent 70%);"
-    ></div>
+    >
+      <!-- Warm bulb halo with a slow, slightly irregular breath (like a real filament) -->
+      <div id="lampBulbGlow" class="lamp-bulb-glow absolute pointer-events-none" aria-hidden="true"></div>
+      <!-- Dust motes drifting in the lamp light -->
+      <div id="dustMotes" class="absolute pointer-events-none overflow-hidden" aria-hidden="true"></div>
+    </div>
 
     <!-- Real-Time Rain & Dynamic Sliding Glass Droplets Canvas (STRICTLY outside the window glass! Room/desk/Sophie 100% dry) -->
     <div
@@ -137,6 +174,7 @@ const isZh = lang === 'zh';
     <div
       id="deskLampTrigger"
       class="absolute left-[3%] top-[18%] w-[22%] h-[30%] z-25 cursor-pointer group rounded-2xl select-none"
+      style="transform: translateZ(1px);"
       title={isZh ? "点击灯罩：开关温暖书房氛围暖光" : "Click Lamp Head: Toggle Warm Study Ambiance"}
     >
       <div class="absolute inset-0 rounded-2xl bg-amber-400/0 group-hover:bg-amber-300/15 transition-colors duration-300 border border-transparent group-hover:border-amber-300/30"></div>
@@ -151,6 +189,7 @@ const isZh = lang === 'zh';
     <div
       id="lampLightTrigger"
       class="absolute left-[89%] top-[38%] w-[8%] h-[20%] z-25 cursor-pointer group rounded-2xl select-none"
+      style="transform: translateZ(1px);"
       title={isZh ? "点击书架小台灯：开关温暖书房氛围暖光" : "Click Shelf Lamp: Toggle Warm Study Ambiance"}
     >
       <div class="absolute inset-0 rounded-2xl bg-amber-400/0 group-hover:bg-amber-300/15 transition-colors duration-300 border border-transparent group-hover:border-amber-300/30"></div>
@@ -165,14 +204,9 @@ const isZh = lang === 'zh';
     <div
       id="sleepingCat"
       class="absolute left-[0%] top-[77%] w-[24.5%] h-[21.5%] z-22 cursor-pointer group pointer-events-auto"
+      style="transform: translateZ(1px);"
       title={isZh ? "熟睡小猫 Milo (点击听温柔呼噜声)" : "Sleeping Cat Milo (Click for soft purr)"}
     >
-      <!-- Animated breathing body layer -->
-      <img
-        src="/cat_breathing_layer.png"
-        alt="Sleeping Cat Breathing Animation"
-        class="cat-breathing w-full h-full object-contain pointer-events-none select-none"
-      />
       <!-- Hover prompt badge -->
       <div class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-30">
         <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium bg-stone-900/90 text-amber-200 border border-amber-400/20 shadow-lg">
@@ -181,12 +215,44 @@ const isZh = lang === 'zh';
       </div>
     </div>
 
-    <!-- Living Detail B: Steaming Hot Coffee Wisps (Delicate Animated Vapor) -->
-    <div class="absolute left-[46.5%] top-[56%] w-[6%] h-[11%] z-18 pointer-events-none overflow-visible">
-      <div class="steam-wisp steam-particle-1"></div>
-      <div class="steam-wisp steam-particle-2"></div>
-      <div class="steam-wisp steam-particle-3"></div>
+    <!-- Living Detail B: Single Natural Coffee Steam at Mug Opening (Canvas Particle Simulation) -->
+    <div
+      id="coffeeSteamZone"
+      class="absolute left-[50.2%] top-[33.0%] w-[7.2%] h-[18.0%] z-22 pointer-events-none select-none overflow-visible"
+    >
+      <!-- Cartoon steam wisps (袅袅升起): ribbons travel up an S-curve, sway, widen & fade, staggered loops -->
+      <svg id="coffeeSteamSvg" viewBox="0 0 90 170" preserveAspectRatio="xMidYMax meet" class="w-full h-full overflow-visible pointer-events-none select-none" aria-hidden="true">
+        <defs>
+          <filter id="steamBlurCore" x="-60%" y="-20%" width="220%" height="140%"><feGaussianBlur stdDeviation="1.3" /></filter>
+          <filter id="steamBlurSoft" x="-80%" y="-30%" width="260%" height="160%"><feGaussianBlur stdDeviation="3.6" /></filter>
+          <linearGradient id="steamFadeGrad" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stop-color="#fff" stop-opacity="0" />
+            <stop offset="0.1" stop-color="#fff" stop-opacity="0.9" />
+            <stop offset="0.45" stop-color="#fff" stop-opacity="0.75" />
+            <stop offset="1" stop-color="#fff" stop-opacity="0" />
+          </linearGradient>
+          <mask id="steamFadeMask" maskUnits="userSpaceOnUse" x="-40" y="-20" width="170" height="200">
+            <rect x="-40" y="-20" width="170" height="200" fill="url(#steamFadeGrad)" />
+          </mask>
+        </defs>
+        <g mask="url(#steamFadeMask)">
+          <ellipse class="steam-haze" cx="45" cy="158" rx="17" ry="9" fill="rgba(255,248,238,0.55)" filter="url(#steamBlurSoft)" />
+          <g class="steam-sway" style="--sway: 4.6s; --sway-delay: -1s;">
+            <path class="steam-wisp steam-soft" style="--dur: 5.8s; --delay: 0s;" pathLength="100" d="M44 168 C 36 150, 54 138, 46 120 S 33 92, 44 74 S 58 44, 47 24 S 38 6, 44 -6" />
+            <path class="steam-wisp steam-core" style="--dur: 5.8s; --delay: 0s;" pathLength="100" d="M44 168 C 36 150, 54 138, 46 120 S 33 92, 44 74 S 58 44, 47 24 S 38 6, 44 -6" />
+          </g>
+          <g class="steam-sway" style="--sway: 6.2s; --sway-delay: -3s;">
+            <path class="steam-wisp steam-soft" style="--dur: 7.0s; --delay: -2.6s;" pathLength="100" d="M49 168 C 58 152, 41 140, 50 122 S 63 96, 52 78 S 36 52, 49 32 S 60 12, 52 -4" />
+            <path class="steam-wisp steam-core thin" style="--dur: 7.0s; --delay: -2.6s;" pathLength="100" d="M49 168 C 58 152, 41 140, 50 122 S 63 96, 52 78 S 36 52, 49 32 S 60 12, 52 -4" />
+          </g>
+          <g class="steam-sway" style="--sway: 5.3s; --sway-delay: -2.2s;">
+            <path class="steam-wisp steam-soft" style="--dur: 6.4s; --delay: -4.7s;" pathLength="100" d="M41 168 C 47 154, 33 142, 40 126 S 50 102, 39 86 S 30 60, 41 42 S 50 20, 40 4" />
+            <path class="steam-wisp steam-core thin" style="--dur: 6.4s; --delay: -4.7s;" pathLength="100" d="M41 168 C 47 154, 33 142, 40 126 S 50 102, 39 86 S 30 60, 41 42 S 50 20, 40 4" />
+          </g>
+        </g>
+      </svg>
     </div>
+
 
     <!-- Hotspot 4: ONLY Sophie Herself (About Sophie) - Strictly Sophie's body & sweater (Does NOT touch bookshelf!) -->
     <div
@@ -448,6 +514,7 @@ const isZh = lang === 'zh';
     if (key === 'p') zoomToObject('credentials');
     if (key === 'a') zoomToObject('about');
     if (key === 'm') toggleAudio();
+    if (key === 'l') toggleLamp();
   });
 
   // ================= 4. Audio Control =================
@@ -609,8 +676,6 @@ const isZh = lang === 'zh';
   sleepingCat?.addEventListener('click', (e) => {
     e.stopPropagation();
     toggleCatPurr();
-    sleepingCat.classList.add('scale-105');
-    setTimeout(() => sleepingCat.classList.remove('scale-105'), 350);
   });
 
   // ================= 6. Window Rain & Dynamic Glass Sliding Droplets Simulation =================
@@ -1134,6 +1199,200 @@ const isZh = lang === 'zh';
     },
   };
 
+  // ================= 6B. Living-detail constants (source-image pixel rects, 1376 x 768) =================
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const STEAM_RECT = { x: 695, y: 228, w: 90, h: 170 };
+  const CAT_RECT = { x: 150, y: 540, w: 300, h: 170 };
+
+  // ================= 6B-1. Sleeping Cat: natural breathing via mesh-warp of the painting =================
+  // Each pixel column of the cat is stretched upward from the cushion line, weighted by a smooth bump centred
+  // on the ribcage. Rear/hips, tail, head and the cushion get zero weight, so they stay perfectly still.
+  let catAnimId: number | null = null;
+  function initCatBreathing() {
+    const cv = document.getElementById('catBreathCanvas') as HTMLCanvasElement | null;
+    if (!cv) return;
+    const c2 = cv.getContext('2d');
+    if (!c2) return;
+    if (catAnimId) { cancelAnimationFrame(catAnimId); catAnimId = null; }
+
+    const R = CAT_RECT;
+    const KY = 2; // vertical oversampling for sub-pixel smoothness
+    cv.width = R.w;
+    cv.height = R.h * KY;
+    c2.imageSmoothingEnabled = true;
+    c2.imageSmoothingQuality = 'high';
+
+    const BASE = 700;   // cushion contact line (does not move)
+    const SPLIT = 576;  // just above the highest point of the back; max lift here, eased back to 0 at the canvas top
+    const TOP = R.y;
+    const CENTER = 266; // ribcage / flank centre
+    const HALF = 84;    // falloff half-width: ~182 (hips) .. ~350 (shoulder/head) -> zero
+    const AMP = 0.029;  // ~2.9% lift of the back at full inhale (~3.6 source px)
+    const weights = new Float32Array(R.w);
+    for (let i = 0; i < R.w; i++) {
+      const u = (R.x + i + 0.5 - CENTER) / HALF;
+      weights[i] = Math.abs(u) < 1 ? Math.pow(Math.cos((u * Math.PI) / 2), 2) : 0;
+    }
+
+    const img = new Image();
+    img.src = '/sophie_lofi_cozy_study.jpg';
+
+    // Breath envelope with slightly varying cycle length (3.8-4.6 s): inhale 42%, exhale 46%, short rest
+    let cycleStart = performance.now();
+    let cycleLen = 4200;
+    function breath(now: number) {
+      let p = (now - cycleStart) / cycleLen;
+      if (p >= 1) {
+        cycleStart = now;
+        cycleLen = 3800 + Math.random() * 800;
+        p = 0;
+      }
+      if (p < 0.42) return 0.5 - 0.5 * Math.cos((Math.PI * p) / 0.42);
+      if (p < 0.88) return 0.5 + 0.5 * Math.cos((Math.PI * (p - 0.42)) / 0.46);
+      return 0;
+    }
+
+    function draw(b: number) {
+      c2!.clearRect(0, 0, cv!.width, cv!.height);
+      c2!.drawImage(img, R.x, R.y, R.w, R.h, 0, 0, R.w, R.h * KY);
+      if (b <= 0.0005) return;
+      for (let i = 0; i < R.w; i++) {
+        const w = weights[i];
+        if (w < 0.002) continue;
+        const D = AMP * b * w * (BASE - SPLIT); // lift (source px) at SPLIT
+        const sx = R.x + i;
+        // lower segment: [SPLIT, BASE] -> [SPLIT - D, BASE]  (stretch anchored on the cushion)
+        c2!.drawImage(img, sx, SPLIT, 1, BASE - SPLIT, i, (SPLIT - D - TOP) * KY, 1, (BASE - SPLIT + D) * KY);
+        // upper segment: [TOP, SPLIT] -> [TOP, SPLIT - D]  (background above eases back to zero)
+        c2!.drawImage(img, sx, TOP, 1, SPLIT - TOP, i, 0, 1, (SPLIT - D - TOP) * KY);
+      }
+    }
+
+    let last = 0;
+    function loop(now: number) {
+      if (now - last > 33) { // ~30 fps is plenty for a 4 s breath
+        last = now;
+        draw(breath(now));
+      }
+      catAnimId = requestAnimationFrame(loop);
+    }
+
+    const start = () => {
+      draw(0);
+      if (!prefersReducedMotion) catAnimId = requestAnimationFrame(loop);
+    };
+    if (img.complete && img.naturalWidth) start();
+    else img.addEventListener('load', start, { once: true });
+  }
+
+  // ================= 6B-2. Dust motes floating in the lamp light =================
+  function initDustMotes() {
+    const host = document.getElementById('dustMotes');
+    if (!host || prefersReducedMotion || host.childElementCount) return;
+    for (let i = 0; i < 11; i++) {
+      const m = document.createElement('span');
+      m.className = 'dust-mote';
+      const size = 1.6 + Math.random() * 2.2;
+      m.style.left = `${8 + Math.random() * 84}%`;
+      m.style.top = `${10 + Math.random() * 80}%`;
+      m.style.width = m.style.height = `${size}px`;
+      m.style.setProperty('--dx', `${(Math.random() - 0.5) * 60}px`);
+      m.style.setProperty('--dy', `${-20 - Math.random() * 50}px`);
+      m.style.setProperty('--o', `${0.25 + Math.random() * 0.4}`);
+      m.style.animationDuration = `${14 + Math.random() * 12}s`;
+      m.style.animationDelay = `${-Math.random() * 20}s`;
+      host.appendChild(m);
+    }
+  }
+
+  // ================= 6C. Natural Blink (3-frame eyelid: open -> half -> closed -> half -> open) =================
+  let eyeCycleTimer: number | null = null;
+  function initSophieBlink() {
+    const half = document.getElementById('sophieBlinkHalf');
+    const closed = document.getElementById('sophieBlinkClosed');
+    if (!half || !closed) return;
+    if (eyeCycleTimer) { clearTimeout(eyeCycleTimer); eyeCycleTimer = null; }
+
+    // frame: 0 = open, 1 = half, 2 = closed (instant swaps, like anime key frames)
+    const show = (frame: 0 | 1 | 2) => {
+      half.style.opacity = frame === 1 ? '1' : '0';
+      closed.style.opacity = frame === 2 ? '1' : '0';
+    };
+    const wait = (ms: number) => new Promise<void>((r) => { eyeCycleTimer = window.setTimeout(r, ms); });
+    const jitter = (a: number, b: number) => a + Math.random() * (b - a);
+
+    async function blink(slow = false) {
+      show(1); await wait(slow ? jitter(90, 120) : jitter(45, 60));       // lids coming down (total close ≈ 90-120 ms)
+      show(2); await wait(slow ? jitter(320, 480) : jitter(55, 85));      // closed hold
+      show(1); await wait(slow ? jitter(130, 160) : jitter(70, 95));      // lids lifting (total open ≈ 120-150 ms)
+      show(0);
+    }
+
+    async function run() {
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        await wait(jitter(2500, 6000) + (Math.random() < 0.15 ? 2500 : 0)); // irregular gaps
+        const r = Math.random();
+        if (r < 0.18) {               // occasional double blink
+          await blink();
+          await wait(jitter(140, 220));
+          await blink();
+        } else if (r < 0.30) {        // occasional slow, content blink (savouring the coffee)
+          await blink(true);
+        } else {
+          await blink();
+        }
+      }
+    }
+    show(0);
+    run();
+  }
+
+  // ================= 6D. Pixel-Perfect Living Element Spatial Alignment =================
+  function updateLivingElementsPosition() {
+    const scene = document.getElementById('sceneContainer');
+    if (!scene) return;
+    const sw = scene.clientWidth;
+    const sh = scene.clientHeight;
+    if (!sw || !sh) return;
+    const imgW = 1376;
+    const imgH = 768;
+    const containerRatio = sw / sh;
+    const imgRatio = imgW / imgH;
+
+    let renderW: number, renderH: number, offsetX: number, offsetY: number;
+    if (containerRatio > imgRatio) {
+      renderW = sw;
+      renderH = sw / imgRatio;
+      offsetX = 0;
+      offsetY = (sh - renderH) / 2;
+    } else {
+      renderH = sh;
+      renderW = sh * imgRatio;
+      offsetY = 0;
+      offsetX = (sw - renderW) / 2;
+    }
+
+    const place = (id: string, x: number, y: number, w: number, h: number) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.left = `${offsetX + (x / imgW) * renderW}px`;
+      el.style.top = `${offsetY + (y / imgH) * renderH}px`;
+      el.style.width = `${(w / imgW) * renderW}px`;
+      el.style.height = `${(h / imgH) * renderH}px`;
+    };
+    // All rects are in source-image pixels (1376 x 768)
+    place('sophieBlinkZone', 750, 150, 170, 200);                       // eyelid frames (exact crop of the face)
+    place('coffeeSteamZone', STEAM_RECT.x, STEAM_RECT.y, STEAM_RECT.w, STEAM_RECT.h); // mug rim centred at x=740, y≈398
+    place('sleepingCat', 160, 560, 285, 150);                           // click / hover hotspot (whole cat incl. head)
+    place('catBreathCanvas', CAT_RECT.x, CAT_RECT.y, CAT_RECT.w, CAT_RECT.h); // breathing warp area
+    place('steamPaintOut', 700, 300, 105, 96);                         // covers the painted steam above the mug
+    place('lampBulbGlow', 278 - 150, 347 - 150, 300, 300);              // desk-lamp bulb
+    place('dustMotes', 150, 210, 360, 360);                             // lamp light cone
+  }
+
+  window.addEventListener('resize', updateLivingElementsPosition);
+
   // ================= 7. Lifecycle & Entry =================
   function setupGardenMode() {
     const rootEl = document.getElementById('garden-3d-root');
@@ -1142,12 +1401,18 @@ const isZh = lang === 'zh';
 
     if (prefers3D && urlParams.get('reading') !== '1') {
       rootEl?.classList.remove('hidden');
+      document.documentElement.classList.add('garden-mode'); // underlying page can't resize the room (same on /, /zh)
+      updateLivingElementsPosition();
       initRain();
       renderRain();
+      initSophieBlink();
+      initCatBreathing();
+      initDustMotes();
       updateCameraLoop();
       playAudio(); // Default rain audio ON on entering the study room!
     } else {
       rootEl?.classList.add('hidden');
+      document.documentElement.classList.remove('garden-mode');
       if (audio && isPlaying) {
         audio.pause();
         isPlaying = false;
@@ -1173,63 +1438,87 @@ const isZh = lang === 'zh';
 </script>
 
 <style>
-  @keyframes catBreathe {
-    0%, 100% {
-      transform: scaleY(1) scaleX(1) translateY(0);
-      filter: drop-shadow(0 0 0 rgba(0,0,0,0));
-    }
-    38% {
-      /* Inhale: distinct, clearly visible rise of cat back and belly */
-      transform: scaleY(1.10) scaleX(1.03) translateY(-4.5px);
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
-    }
-    48% {
-      /* Peak of breath */
-      transform: scaleY(1.095) scaleX(1.028) translateY(-4.2px);
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.10));
-    }
-    75% {
-      /* Exhale: gentle descent back to rest */
-      transform: scaleY(0.99) scaleX(0.995) translateY(0.5px);
-      filter: drop-shadow(0 0 0 rgba(0,0,0,0));
-    }
+  /* ---------- Cat breathing canvas: feathered edges so it melts into the painting ---------- */
+  .cat-breath-canvas {
+    -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 82%, transparent 100%);
+    mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 82%, transparent 100%);
   }
 
-  .cat-breathing {
-    animation: catBreathe 3.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    transform-origin: 45% 90%;
-    will-change: transform, filter;
-  }
-
+  /* ---------- Coffee steam wisps ---------- */
+  #coffeeSteamSvg { mix-blend-mode: screen; opacity: 1; }
   .steam-wisp {
-    position: absolute;
-    bottom: 0;
-    width: 14px;
-    height: 36px;
-    border-radius: 50%;
-    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 75%);
-    filter: blur(4px);
+    fill: none;
+    stroke-linecap: round;
+    stroke-dasharray: 46 160;
+    stroke-dashoffset: 46;
     opacity: 0;
+    animation: steamRise var(--dur, 6s) cubic-bezier(0.35, 0.1, 0.55, 0.9) var(--delay, 0s) infinite;
   }
-  @keyframes steamWaft1 {
-    0% { transform: translateY(0) scaleX(0.7) scaleY(0.6); opacity: 0; }
-    25% { opacity: 0.55; }
-    60% { transform: translateY(-24px) scaleX(1.3) scaleY(1.3) translateX(4px); opacity: 0.3; }
-    100% { transform: translateY(-50px) scaleX(2.0) scaleY(1.8) translateX(8px); opacity: 0; }
+  .steam-core { stroke: rgba(255, 252, 246, 0.95); stroke-width: 3.8; filter: url(#steamBlurCore); }
+  .steam-core.thin { stroke-width: 2.6; }
+  .steam-soft { stroke: rgba(255, 247, 235, 0.62); stroke-width: 11; filter: url(#steamBlurSoft); }
+  .steam-sway {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: steamSway var(--sway, 5s) ease-in-out var(--sway-delay, 0s) infinite alternate;
   }
-  @keyframes steamWaft2 {
-    0% { transform: translateY(0) scaleX(0.8) scaleY(0.7); opacity: 0; }
-    30% { opacity: 0.6; }
-    65% { transform: translateY(-28px) scaleX(1.4) scaleY(1.4) translateX(-4px); opacity: 0.35; }
-    100% { transform: translateY(-55px) scaleX(2.2) scaleY(1.9) translateX(-9px); opacity: 0; }
+  .steam-haze { animation: steamHaze 5.5s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+
+  @keyframes steamRise {
+    0%   { stroke-dashoffset: 46;  opacity: 0; }
+    14%  { opacity: 0.95; }
+    55%  { opacity: 0.6; }
+    100% { stroke-dashoffset: -104; opacity: 0; }
   }
-  @keyframes steamWaft3 {
-    0% { transform: translateY(0) scaleX(0.6) scaleY(0.6); opacity: 0; }
-    20% { opacity: 0.45; }
-    55% { transform: translateY(-22px) scaleX(1.2) scaleY(1.2) translateX(3px); opacity: 0.25; }
-    100% { transform: translateY(-46px) scaleX(1.8) scaleY(1.6) translateX(6px); opacity: 0; }
+  @keyframes steamSway {
+    0%   { transform: translateX(-2.5px) skewX(6deg) scaleX(0.96); }
+    100% { transform: translateX(2.5px) skewX(-7deg) scaleX(1.06); }
   }
-  .steam-particle-1 { left: 15%; animation: steamWaft1 3.4s ease-out infinite; }
-  .steam-particle-2 { left: 45%; animation: steamWaft2 3.8s ease-out 1.2s infinite; }
-  .steam-particle-3 { left: 75%; animation: steamWaft3 4.2s ease-out 2.3s infinite; }
+  @keyframes steamHaze {
+    0%, 100% { opacity: 0.55; transform: scale(1, 1); }
+    50%      { opacity: 0.85; transform: scale(1.12, 1.25); }
+  }
+
+  /* ---------- Lamp bulb halo ---------- */
+  .lamp-bulb-glow {
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(255, 214, 150, 0.42) 0%, rgba(255, 186, 100, 0.18) 32%, rgba(255, 170, 80, 0.06) 55%, transparent 70%);
+    animation: lampBreath 7.5s ease-in-out infinite;
+    will-change: opacity, transform;
+  }
+  @keyframes lampBreath {
+    0%, 100% { opacity: 0.82; transform: scale(1); }
+    30%      { opacity: 1;    transform: scale(1.03); }
+    52%      { opacity: 0.9; }
+    54%      { opacity: 0.8; }  /* tiny filament flicker */
+    56%      { opacity: 0.93; }
+    75%      { opacity: 0.97; transform: scale(1.015); }
+  }
+
+  /* ---------- Dust motes ---------- */
+  :global(.dust-mote) {
+    position: absolute;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(255, 238, 200, 0.95) 0%, rgba(255, 220, 160, 0.4) 50%, transparent 75%);
+    opacity: 0;
+    animation-name: moteDrift;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  @keyframes moteDrift {
+    0%   { transform: translate(0, 0); opacity: 0; }
+    20%  { opacity: var(--o, 0.4); }
+    50%  { transform: translate(calc(var(--dx) * 0.6), calc(var(--dy) * 0.5)); }
+    80%  { opacity: var(--o, 0.4); }
+    100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+  }
+
+  /* Room mode: the reading page underneath is hidden so its (language-dependent) width can't change the scene size on phones */
+  :global(html.garden-mode body > :not(#garden-3d-root):not(astro-dev-toolbar):not(script):not(style)) { display: none !important; }
+  :global(html.garden-mode), :global(html.garden-mode body) { overflow: hidden; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .steam-wisp, .steam-sway, .steam-haze, .lamp-bulb-glow { animation: none !important; }
+    .steam-wisp { opacity: 0 !important; }
+  }
 </style>

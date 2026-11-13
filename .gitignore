@@ -28,5 +28,8 @@ tile_*.jpg
 public/check_*.jpg
 public/cat_exact.png
 
+# local backups
+_backups/
+
 # jetbrains setting folder
 .idea/
